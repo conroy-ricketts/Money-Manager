@@ -1,23 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import TransactionCard from '../components/TransactionCards';
 
-function TransactionLog() {
+const styles = StyleSheet.create
+({
+    screen:
+    {
+        flex: 1,
+        backgroundColor: '#DBDBD9',
+    },
+    cards: 
+    {
+      alignItems: 'center',
+      top: 72,
+      padding: 3,
+    },
+});
+
+const testTransactionsAsJSON = [
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+];
+
+function TransactionLog() : JSX.Element {
   return (
-    <View style={styles.container}>
-      <Text>This is a placeholder for the main screen of the app.</Text>
-      <StatusBar style="auto" />
+    <View style = {styles.screen}>
+        {testTransactionsAsJSON.map(() => (
+            <View style = {styles.cards}>
+                <TransactionCard />
+            </View>
+        ))}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default TransactionLog;
