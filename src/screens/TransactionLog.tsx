@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import TransactionCard from '../components/TransactionCards';
+import TransactionCard, { Transaction } from '../components/TransactionCards';
 
 const styles = StyleSheet.create
 ({
@@ -17,24 +17,23 @@ const styles = StyleSheet.create
     },
 });
 
-const testTransactionsAsJSON = [
-    {
-
-    },
-    {
-
-    },
-    {
-
-    },
+const testTransactionsAsJSON: Transaction[] = [
+  {
+    date: 'Sept. 25, 2021 (Saturday)',
+    category: 'Dogecoin Returns',
+    subCategory: '',
+    account: 'Crypto Wallet',
+    type: 'income',
+    amount: 100000,
+  },
 ];
 
 function TransactionLog() : JSX.Element {
   return (
     <View style = {styles.screen}>
-        {testTransactionsAsJSON.map(() => (
+        {testTransactionsAsJSON.map((transactionData) => (
             <View style = {styles.cards}>
-                <TransactionCard />
+                <TransactionCard transaction = {transactionData}/>
             </View>
         ))}
     </View>
