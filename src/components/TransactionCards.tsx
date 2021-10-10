@@ -52,6 +52,9 @@ interface TransactionProps
 export default function TransactionCard({ transaction }: TransactionProps) 
 {
   let amountStyle: any;
+  let transactionCategory: string = 
+    transaction.subCategory == "" ? transaction.category :
+    `${transaction.category} - ${transaction.subCategory}`;
 
   if(transaction.type == 'income')
   {
@@ -68,12 +71,10 @@ export default function TransactionCard({ transaction }: TransactionProps)
 
   return (
     <View style = {styles.card}>
-      <Text style = {styles.normalText}> {transaction.date} </Text>
-      <Text style = {styles.normalText}>
-        {`${transaction.category} - ${transaction.subCategory}`}
-      </Text>
-      <Text style = {styles.normalText}> {transaction.account} </Text>
-      <Text style = {amountStyle}> {`$${transaction.amount}`} </Text>
+      <Text style = {[ styles.normalText, {position: 'absolute', left: 0, top: 0} ]}> {transaction.date} </Text>
+      <Text style = {[ styles.normalText, {position: 'absolute', left: 0, bottom: 1} ]}> {transactionCategory} </Text>
+      <Text style = {[ styles.normalText, {position: 'absolute', left: 125, top: 20} ]}> {transaction.account} </Text>
+      <Text style = {[ amountStyle, {position: 'absolute', right: 0, top: 15} ]}> {`$${transaction.amount}`} </Text>
     </View>
   );
 }
