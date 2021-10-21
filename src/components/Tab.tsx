@@ -23,16 +23,17 @@ const Tabs = () => {
             elevation: 0,
             backgroundColor: '#131313',
             borderRadius: 10,
-            height: 70,
+            height: 70, 
+            paddingBottom: 0
           }
         }}
         >
-          <Tab.Screen 
+          <Tab.Screen  
           name='Overview' 
           component={OverView} 
           options={{
               tabBarIcon: ({focused} : {focused:any}) => (
-                  <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
+                  <View style={{alignItems: 'center', justifyContent: 'center',}}>
                       <Image source={require('../../assets/icons/overview.png')}
                       resizeMode='contain'
                       style={{
@@ -46,11 +47,11 @@ const Tabs = () => {
               ),
           }}
           />
-          <Tab.Screen name='Data' 
+          <Tab.Screen name='Statistics' 
           component={Statistics} 
           options={{
             tabBarIcon: ({focused} : {focused:any}) => (
-                <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
+                <View style={{alignItems: 'center', justifyContent: 'center'}}>
                     <Image source={require('../../assets/icons/statistics.png')}
                     resizeMode='contain'
                     style={{
@@ -68,7 +69,7 @@ const Tabs = () => {
           component={TransactionLog} 
           options={{
             tabBarIcon: ({focused} : {focused:any}) => (
-                <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
+                <View style={{alignItems: 'center', justifyContent: 'center'}}>
                     <Image source={require('../../assets/icons/transactionlog.png')}
                     resizeMode='contain'
                     style={{
@@ -86,7 +87,7 @@ const Tabs = () => {
           component={Settings} 
           options={{
             tabBarIcon: ({focused} : {focused:any}) => (
-                <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
+                <View style={{alignItems: 'center', justifyContent: 'center'}}>
                     <Image source={require('../../assets/icons/settings.png')}
                     resizeMode='contain'
                     style={{
