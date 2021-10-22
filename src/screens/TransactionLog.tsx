@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import TransactionCard, { Transaction } from '../components/TransactionCards';
-
+import RunningTotal from '../components/RunningTotal';
 const styles = StyleSheet.create
 ({
     screen:
@@ -32,7 +32,7 @@ function TransactionLog() : JSX.Element {
       {/* The following view component is only used to pad the bottom of the scroll
         view so that we can see the last card! */}
       <View style={{height: 300}} />
-
+      <RunningTotal/>
     </ScrollView>
   );
 }
@@ -40,7 +40,7 @@ function TransactionLog() : JSX.Element {
 export default TransactionLog;
 
 //The following JSON is temporary!
-const testTransactionsAsJSON: Transaction[] = [
+export const testTransactionsAsJSON: Transaction[] = [
   {
     date: 'Sept. 25, 2021 (Saturday)',
     category: 'Dogecoin Returns',
