@@ -40,7 +40,7 @@ function TransactionLog() : JSX.Element {
 export default TransactionLog;
 
 //The following JSON is temporary!
-const testTransactionsAsJSON: Transaction[] = [
+export const testTransactionsAsJSON: Transaction[] = [
   {
     date: 'Sept. 25, 2021 (Saturday)',
     category: 'Dogecoin Returns',
