@@ -4,27 +4,40 @@ import TransactionLog, {} from '../screens/TransactionLog';
 import { testTransactionsAsJSON } from '../screens/TransactionLog';
 import { View, StyleSheet, Text } from 'react-native';
 
+var normalTextSize = 14;
+
 const totalStyles = StyleSheet.create
 ({
+    card: 
+    {
+      top: 70,
+      alignSelf: 'center',
+      backgroundColor: '#DBDBD9',
+      height: 12,
+      width: 333,
+      borderRadius: 0,
+      borderWidth: 0,
+      borderColor: 'black',
+    },
     incomeText:
     {
       fontWeight: "bold",
       fontFamily: "Times New Roman",
-      fontSize: 24,
+      fontSize: normalTextSize,
       color: '#008315',
     },
     expenseText:
     {
       fontWeight: "bold",
       fontFamily: "Times New Roman",
-      fontSize: 24,
+      fontSize: normalTextSize,
       color: '#DB0000',
     },
     balanceText:
     {
       fontWeight: "bold",
       fontFamily: "Times New Roman",
-      fontSize: 24,
+      fontSize: normalTextSize,
       color: '#0057D9',
     },    
 });
@@ -34,25 +47,27 @@ function RunningTotal()
     var balance = 0;
     var income = 0;
     var expenses = 0;
-    for(var i = 0; i < TransactionLog.length; i++)
+    for(var i = 0; i < testTransactionsAsJSON.length; i++)
     {
-        if(testTransactionsAsJSON[i].type == 'income')
+      
+        if(testTransactionsAsJSON[i].type == "income")
         {
             income += testTransactionsAsJSON[i].amount;
 
         }
-        else if(testTransactionsAsJSON[i].type == 'expense')
+        else if(testTransactionsAsJSON[i].type == "expense")
         {
             expenses += testTransactionsAsJSON[i].amount;
         }
     }
 
+
     balance = income - expenses;
+    //<Text style = {[ totalStyles.balanceText, {position: 'absolute', right: 111, top: 50} ]}> {balance} </Text>
     return (
-      <View>
-        <Text style = {[ totalStyles.balanceText, {position: 'absolute', left: 10, top: 20} ]}> {balance} </Text>
-        <Text style = {[ totalStyles.incomeText, {position: 'absolute', left: 10, top: 30} ]}> {income} </Text>
-        <Text style = {[ totalStyles.expenseText, {position: 'absolute', left: 10, top: 40} ]}> {expenses} </Text>
+      <View style = {totalStyles.card}>
+        <Text style = {[ totalStyles.incomeText, {position: 'absolute', left: 0, top: 0} ]}> {"Total Income: $" + income} </Text>
+        <Text style = {[ totalStyles.expenseText, {position: 'absolute', right: 5, top: 0} ]}> {"Total Expenses: $" + expenses} </Text>
       </View>
     );
 }
