@@ -1,5 +1,5 @@
 // The top of the transaction history log should show a running total of income and expenses.
-import React, { Component } from 'react';
+import React from 'react';
 import TransactionLog, {} from '../screens/TransactionLog';
 import { testTransactionsAsJSON } from '../screens/TransactionLog';
 import { View, StyleSheet, Text } from 'react-native';
