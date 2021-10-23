@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import TransactionCard, { Transaction } from '../components/TransactionCards';
-
+import RunningTotal from '../components/RunningTotal';
 const styles = StyleSheet.create
 ({
     screen:
@@ -19,21 +19,27 @@ const styles = StyleSheet.create
 
 function TransactionLog() : JSX.Element {
   return (
-    <ScrollView style = {styles.screen}>
+    <View style = {styles.screen}>
 
-      {/* This following block of code maps an array of our test transactions
-      to transaction cards to be rendered */}
-      {testTransactionsAsJSON.map((transactionData) => (
-          <View style = {styles.cards}>
-              <TransactionCard transaction = {transactionData}/>
-          </View>
-      ))}
+      <RunningTotal/>
 
-      {/* The following view component is only used to pad the bottom of the scroll
-        view so that we can see the last card! */}
-      <View style={{height: 300}} />
+      <ScrollView>
 
-    </ScrollView>
+        {/* This following block of code maps an array of our test transactions
+        to transaction cards to be rendered */}
+        {testTransactionsAsJSON.map((transactionData) => (
+            <View style = {styles.cards}>
+                <TransactionCard transaction = {transactionData}/>
+            </View>
+        ))}
+
+        {/* The following view component is only used to pad the bottom of the scroll
+          view so that we can see the last card! */}
+        <View style={{height: 300}} />
+
+      </ScrollView>
+
+    </View>
   );
 }
 
