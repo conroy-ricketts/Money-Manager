@@ -10,7 +10,7 @@ const totalStyles = StyleSheet.create
 ({
     card: 
     {
-      top: 70,
+      top: 62,
       alignSelf: 'center',
       backgroundColor: '#DBDBD9',
       height: 12,
