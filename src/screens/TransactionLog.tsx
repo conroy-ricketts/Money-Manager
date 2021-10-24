@@ -28,37 +28,50 @@ function TransactionLog() : JSX.Element {
   const [selectedView, setSelectedView] = useState("all");
 
   return (
-    <View style = {styles.screen}>
-      
+
+    <View style = {styles.screen}>    
+
+      {/*Render the view toggle button*/}
       <View style = {styles.viewToggle}> 
+
         <Picker
           selectedValue = {selectedView}
           style = {{ height: 50, width: 150 }}
-          onValueChange = {(itemValue, itemIndex) => setSelectedView(itemValue)}
-        >          
+          onValueChange = {(itemValue) => setSelectedView(itemValue)}
+        >      
+
+          {/*list options for view toggle*/}
           <Picker.Item label = "All" value = "all" />
           <Picker.Item label = "Income" value = "income" />
           <Picker.Item label = "Expenses" value = "expense" />
           <Picker.Item label = "Transfers" value = "transfer" />
+
         </Picker>
+
       </View>
 
+      {/*Render the transaction cards*/}
       <ScrollView>
-        {/* This following block of code maps an array of our test transactions
-        to transaction cards to be rendered */}
-        {testTransactionsAsJSON.map((transactionData) => (          
+
+        {/*Map an array of our test transactions to transaction cards to be rendered*/}
+        {testTransactionsAsJSON.map((transactionData) => (
+          
+          //Only render a transaction if the user selected it's type in the view toggle
           transactionData.type == selectedView || selectedView == "all" ?
           (
             <View style = {styles.cards}>
               <TransactionCard transaction = {transactionData}/>
             </View>
           )
-          : null         
+          : null
+
         ))}
-        {/* The following view component is only used to pad the bottom of the scroll
-          view so that we can see the last card! */}
+
+        {/*Pad the bottom of the scroll view so that we can see the last card!*/}
         <View style={{height: 300}} />
+
       </ScrollView>
+
     </View>
   );
 }
