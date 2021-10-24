@@ -1,39 +1,65 @@
-import React from 'react';
+import React, { useState }  from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import TransactionCard, { Transaction } from '../components/TransactionCards';
+import { Picker } from '@react-native-picker/picker';
 
 const styles = StyleSheet.create
 ({
     screen:
     {
-        flex: 1,
-        backgroundColor: '#DBDBD9',
+      flex: 1,
+      backgroundColor: '#DBDBD9',
     },
     cards: 
     {
       alignItems: 'center',
-      top: 72,
+      top: 20,
       padding: 3,
+    },
+    viewToggle:
+    {
+      paddingTop: 10,
+      paddingLeft: 170,
     },
 });
 
 function TransactionLog() : JSX.Element {
+
+  const [selectedView, setSelectedView] = useState("all");
+
   return (
-    <ScrollView style = {styles.screen}>
+    <View style = {styles.screen}>
+      
+      <View style = {styles.viewToggle}> 
+        <Picker
+          selectedValue = {selectedView}
+          style = {{ height: 50, width: 150 }}
+          onValueChange = {(itemValue, itemIndex) => setSelectedView(itemValue)}
+        >          
+          <Picker.Item label = "All" value = "all" />
+          <Picker.Item label = "Income" value = "income" />
+          <Picker.Item label = "Expenses" value = "expense" />
+          <Picker.Item label = "Transfers" value = "transfer" />
+        </Picker>
+      </View>
 
-      {/* This following block of code maps an array of our test transactions
-      to transaction cards to be rendered */}
-      {testTransactionsAsJSON.map((transactionData) => (
-          <View style = {styles.cards}>
+      <ScrollView>
+        {/* This following block of code maps an array of our test transactions
+        to transaction cards to be rendered */}
+        {testTransactionsAsJSON.map((transactionData) => (          
+          transactionData.type == selectedView || selectedView == "all" ?
+          (
+            <View style = {styles.cards}>
               <TransactionCard transaction = {transactionData}/>
-          </View>
-      ))}
-
-      {/* The following view component is only used to pad the bottom of the scroll
-        view so that we can see the last card! */}
-      <View style={{height: 300}} />
-
-    </ScrollView>
+            </View>
+          )
+          : null         
+        ))}
+        {/* The following view component is only used to pad the bottom of the scroll
+          view so that we can see the last card! */}
+        <View style={{height: 300}} />
+      </ScrollView>
+    </View>
   );
 }
 
