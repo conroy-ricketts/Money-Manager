@@ -1,6 +1,5 @@
 // The top of the transaction history log should show a running total of income and expenses.
-import React, { Component } from 'react';
-import TransactionLog, {} from '../screens/TransactionLog';
+import React from 'react';
 import { testTransactionsAsJSON } from '../screens/TransactionLog';
 import { View, StyleSheet, Text } from 'react-native';
 
@@ -10,7 +9,7 @@ const totalStyles = StyleSheet.create
 ({
     card: 
     {
-      top: 70,
+      top: 62,
       alignSelf: 'center',
       backgroundColor: '#DBDBD9',
       height: 12,
