@@ -109,7 +109,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     subCategory: '',
     account: 'Checking Account',
     type: 'income',
-    amount: 56522.40,
+    amount: 5652.40,
   },
   {
     date: 'Sept. 22, 2021 (Wednesday)',
