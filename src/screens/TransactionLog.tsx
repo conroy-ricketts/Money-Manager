@@ -1,41 +1,80 @@
-import React from 'react';
+import React, { useState }  from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import TransactionCard, { Transaction } from '../components/TransactionCards';
+import { Picker } from '@react-native-picker/picker';
 import RunningTotal from '../components/RunningTotal';
+
 const styles = StyleSheet.create
 ({
     screen:
     {
-        flex: 1,
-        backgroundColor: '#DBDBD9',
+      flex: 1,
+      backgroundColor: '#DBDBD9',
     },
     cards: 
     {
       alignItems: 'center',
-      top: 72,
+      top: 20,
       padding: 3,
+    },
+    viewToggle:
+    {
+      paddingTop: 10,
+      paddingLeft: 170,
     },
 });
 
 function TransactionLog() : JSX.Element {
+
+  const [selectedView, setSelectedView] = useState("all");
+
   return (
     <View style = {styles.screen}>
-
+      
+      {/*Render the running total*/}
       <RunningTotal/>
 
+      {/*Render the view toggle button*/}
+      <View style = {styles.viewToggle}> 
+
+        <Picker
+          selectedValue = {selectedView}
+          style = {{ height: 50, width: 150 }}
+          onValueChange = {(itemValue) => setSelectedView(itemValue)}
+        >      
+
+          {/*list options for view toggle*/}
+          <Picker.Item label = "All" value = "all" />
+          <Picker.Item label = "Income" value = "income" />
+          <Picker.Item label = "Expenses" value = "expense" />
+          <Picker.Item label = "Transfers" value = "transfer" />
+
+        </Picker>     
+
+      </View>       
+
+      {/*Pad the top of the scroll view so that it does not get overlapped*/}
+      <View style = {{height: 10}}/>
+
+      {/*Render the transaction cards*/}
       <ScrollView>
 
-        {/* This following block of code maps an array of our test transactions
-        to transaction cards to be rendered */}
+        {/*Map an array of our test transactions to transaction cards to be rendered*/}
         {testTransactionsAsJSON.map((transactionData) => (
+          
+          //Only render a transaction if the user selected it's type in the view toggle
+          transactionData.type == selectedView || selectedView == "all" ?
+          (
             <View style = {styles.cards}>
-                <TransactionCard transaction = {transactionData}/>
+              <TransactionCard transaction = {transactionData}/>
             </View>
+          )
+          : null
+
         ))}
 
-        {/* The following view component is only used to pad the bottom of the scroll
-          view so that we can see the last card! */}
-        <View style={{height: 300}} />
+        {/*Pad the bottom of the scroll view so that we can see the last card!*/}
+        <View style = {{height: 300}}/>
 
       </ScrollView>
 

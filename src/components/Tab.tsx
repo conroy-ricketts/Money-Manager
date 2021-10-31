@@ -6,7 +6,6 @@ import Settings from '../screens/Settings';
 import Statistics from '../screens/Statistics';
 import TransactionLog from '../screens/TransactionLog';
 
-
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
