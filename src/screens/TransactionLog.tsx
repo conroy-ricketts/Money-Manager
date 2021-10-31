@@ -29,7 +29,10 @@ function TransactionLog() : JSX.Element {
   const [selectedView, setSelectedView] = useState("all");
 
   return (
-    <View style = {styles.screen}>    
+    <View style = {styles.screen}>
+      
+      {/*Render the running total*/}
+      <RunningTotal/>
 
       {/*Render the view toggle button*/}
       <View style = {styles.viewToggle}> 
@@ -46,12 +49,12 @@ function TransactionLog() : JSX.Element {
           <Picker.Item label = "Expenses" value = "expense" />
           <Picker.Item label = "Transfers" value = "transfer" />
 
-        </Picker>
+        </Picker>     
 
-      </View>
-      
-      {/*Render the running total*/}      
-      <RunningTotal/>
+      </View>       
+
+      {/*Pad the top of the scroll view so that it does not get overlapped*/}
+      <View style = {{height: 10}}/>
 
       {/*Render the transaction cards*/}
       <ScrollView>
@@ -71,7 +74,7 @@ function TransactionLog() : JSX.Element {
         ))}
 
         {/*Pad the bottom of the scroll view so that we can see the last card!*/}
-        <View style={{height: 300}} />
+        <View style = {{height: 300}}/>
 
       </ScrollView>
 
