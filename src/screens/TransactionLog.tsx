@@ -2,6 +2,7 @@ import React, { useState }  from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import TransactionCard, { Transaction } from '../components/TransactionCards';
 import { Picker } from '@react-native-picker/picker';
+import RunningTotal from '../components/RunningTotal';
 
 const styles = StyleSheet.create
 ({
@@ -28,7 +29,6 @@ function TransactionLog() : JSX.Element {
   const [selectedView, setSelectedView] = useState("all");
 
   return (
-
     <View style = {styles.screen}>    
 
       {/*Render the view toggle button*/}
@@ -49,6 +49,9 @@ function TransactionLog() : JSX.Element {
         </Picker>
 
       </View>
+      
+      {/*Render the running total*/}      
+      <RunningTotal/>
 
       {/*Render the transaction cards*/}
       <ScrollView>
@@ -79,7 +82,7 @@ function TransactionLog() : JSX.Element {
 export default TransactionLog;
 
 //The following JSON is temporary!
-const testTransactionsAsJSON: Transaction[] = [
+export const testTransactionsAsJSON: Transaction[] = [
   {
     date: 'Sept. 25, 2021 (Saturday)',
     category: 'Dogecoin Returns',
