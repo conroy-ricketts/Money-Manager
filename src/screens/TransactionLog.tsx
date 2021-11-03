@@ -88,6 +88,14 @@ export default TransactionLog;
 export const testTransactionsAsJSON: Transaction[] = [
   {
     date: 'Sept. 25, 2021 (Saturday)',
+    category: 'A Really Really Long Category Name',
+    subCategory: '',
+    account: 'A Really Really Long Account Name',
+    type: 'income',
+    amount: 100000,
+  },
+  {
+    date: 'Sept. 25, 2021 (Saturday)',
     category: 'Dogecoin Returns',
     subCategory: '',
     account: 'Crypto Wallet',

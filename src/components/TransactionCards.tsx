@@ -14,7 +14,7 @@ const styles = StyleSheet.create
     },
     normalText:
     {
-      fontSize: 12,
+      fontSize: 14,
       color: 'black',
     },
     incomeText:
@@ -56,6 +56,15 @@ export default function TransactionCard({ transaction }: TransactionProps)
     transaction.subCategory == "" ? transaction.category :
     `${transaction.category} - ${transaction.subCategory}`;
 
+  {/*truncate both the account name and the category name so that they do not overlap with the transcation amount*/}
+  let truncateSize = 30;
+  let accountName: string =
+    transaction.account.length > truncateSize ? transaction.account.substring(0, truncateSize) + "..." :
+    transaction.account;
+  let categoryName: string =
+    transactionCategory.length > truncateSize ? transactionCategory.substring(0, truncateSize) + "..." :
+    transactionCategory;
+
   if(transaction.type == 'income')
   {
     amountStyle = styles.incomeText;
@@ -71,9 +80,8 @@ export default function TransactionCard({ transaction }: TransactionProps)
 
   return (
     <View style = {styles.card}>
-      <Text style = {[ styles.normalText, {position: 'absolute', left: 0, top: 0} ]}> {transaction.date} </Text>
-      <Text style = {[ styles.normalText, {position: 'absolute', left: 0, bottom: 1} ]}> {transactionCategory} </Text>
-      <Text style = {[ styles.normalText, {position: 'absolute', left: 125, top: 20} ]}> {transaction.account} </Text>
+      <Text style = {[ styles.normalText, {position: 'absolute', left: 3, top: 5} ]}> {accountName} </Text>
+      <Text style = {[ styles.normalText, {position: 'absolute', left: 3, bottom: 7} ]}> {categoryName} </Text>
       <Text style = {[ amountStyle, {position: 'absolute', right: 0, top: 15} ]}> {`$${transaction.amount}`} </Text>
     </View>
   );
