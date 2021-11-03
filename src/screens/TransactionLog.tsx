@@ -21,12 +21,12 @@ function DateLabel({ date }: { date: string}): JSX.Element {
   return (
     <View style={{ width: 333, height: 40, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0 }}>
       <View style={{flex: 1, height: 2, backgroundColor: '#000', margin: 0, padding: 0}} />
-      <Text style={{justifyContent: 'center', backgroundColor: '#DBDBD9', alignSelf: 'center', margin: '0', padding: 5 }}>{date}</Text>
+      <Text style={{alignSelf: 'center', justifyContent: 'center', backgroundColor: '#DBDBD9', margin: 0, padding: 5}}>{date}</Text>
       <View style={{flex: 1, height: 2, backgroundColor: '#000', margin: 0, padding: 0}} />
     </View>
   )
 }
-
+// 
 function TransactionLog() : JSX.Element {
   return (
     <ScrollView style = {styles.screen}>
@@ -35,7 +35,7 @@ function TransactionLog() : JSX.Element {
       to transaction cards to be rendered */}
       {testTransactionsAsJSON.map((transactionData, i) => (
           <View style = {styles.cards}>
-            {i === 0 || transactionData.date !== testTransactionsAsJSON[i-1].date ? <DateLabel date={transactionData.date} /> : null}
+            {i === 0 || transactionData.date !== testTransactionsAsJSON[i-1].date ? <DateLabel date={transactionData.date}/>  : null}
               <TransactionCard transaction = {transactionData}/>
           </View>
       ))}
