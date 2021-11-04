@@ -26,7 +26,7 @@ function DateLabel({ date }: { date: string}): JSX.Element {
     </View>
   )
 }
-// 
+ 
 function TransactionLog() : JSX.Element {
   return (
     <ScrollView style = {styles.screen}>
