@@ -107,8 +107,7 @@ export default function TransactionCard({ transaction }: TransactionProps)
   {
   return (
     <View style = {styles.card}>
-      <Text style = {[ styles.normalText, {position: 'absolute', left: 0, top: 0} ]}> {transaction.date} </Text>
-      <Text style = {[ styles.normalText, {position: 'absolute', left: 0, bottom: 1} ]}> {transactionCategory} </Text>
+      <Text style = {[ styles.normalText, {position: 'absolute', left: 0, top: 20} ]}> {transactionCategory} </Text>
       <Text style = {[ styles.normalText, {position: 'absolute', left: 125, top: 20} ]}> {transaction.account} </Text>
       <Text style = {[ amountStyle, {position: 'absolute', right: 0, top: 15} ]}> {`$${transaction.amount}`} </Text>
     </View>
