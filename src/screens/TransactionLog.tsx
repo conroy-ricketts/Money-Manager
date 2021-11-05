@@ -76,7 +76,7 @@ function TransactionLog() : JSX.Element {
           transactionData.type == selectedView || selectedView == "all" ?
           (
             <View style = {styles.cards}>
-              {i === 0 || transactionData.date !== testTransactionsAsJSON[i-1].date ? <DateLabel date={transactionData.date}/>  : null}
+              {i === 0 || transactionData.date !== testTransactionsAsJSON[i-1].date || transactionData.type !== testTransactionsAsJSON[i-1].type && selectedView !== 'all' ? <DateLabel date={transactionData.date}/>  : null}
               <TransactionCard transaction = {transactionData}/>
             </View>
           )
