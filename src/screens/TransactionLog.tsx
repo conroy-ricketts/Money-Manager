@@ -1,19 +1,26 @@
-import React from 'react';
+import React, { useState }  from 'react';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
 import TransactionCard, { Transaction } from '../components/TransactionCards';
+import { Picker } from '@react-native-picker/picker';
+import RunningTotal from '../components/RunningTotal';
 
 const styles = StyleSheet.create
 ({
     screen:
     {
-        flex: 1,
-        backgroundColor: '#DBDBD9',
+      flex: 1,
+      backgroundColor: '#DBDBD9',
     },
     cards: 
     {
       alignItems: 'center',
-      top: 72,
+      top: 20,
       padding: 3,
+    },
+    viewToggle:
+    {
+      paddingTop: 10,
+      paddingLeft: 170,
     },
 });
 
@@ -28,30 +35,68 @@ function DateLabel({ date }: { date: string}): JSX.Element {
 }
  
 function TransactionLog() : JSX.Element {
+
+  const [selectedView, setSelectedView] = useState("all");
+
   return (
-    <ScrollView style = {styles.screen}>
+    <View style = {styles.screen}>
+      
+      {/*Render the running total*/}
+      <RunningTotal/>
 
-      {/* This following block of code maps an array of our test transactions
-      to transaction cards to be rendered */}
-      {testTransactionsAsJSON.map((transactionData, i) => (
-          <View style = {styles.cards}>
-            {i === 0 || transactionData.date !== testTransactionsAsJSON[i-1].date ? <DateLabel date={transactionData.date}/>  : null}
+      {/*Render the view toggle button*/}
+      <View style = {styles.viewToggle}> 
+
+        <Picker
+          selectedValue = {selectedView}
+          style = {{ height: 50, width: 150 }}
+          onValueChange = {(itemValue) => setSelectedView(itemValue)}
+        >      
+
+          {/*list options for view toggle*/}
+          <Picker.Item label = "All" value = "all" />
+          <Picker.Item label = "Income" value = "income" />
+          <Picker.Item label = "Expenses" value = "expense" />
+          <Picker.Item label = "Transfers" value = "transfer" />
+
+        </Picker>     
+
+      </View>       
+
+      {/*Pad the top of the scroll view so that it does not get overlapped*/}
+      <View style = {{height: 10}}/>
+
+      {/*Render the transaction cards*/}
+      <ScrollView>
+
+        {/*Map an array of our test transactions to transaction cards to be rendered*/}
+        {testTransactionsAsJSON.map((transactionData, i) => (
+          
+          //Only render a transaction if the user selected it's type in the view toggle
+          transactionData.type == selectedView || selectedView == "all" ?
+          (
+            <View style = {styles.cards}>
+              {i === 0 || transactionData.date !== testTransactionsAsJSON[i-1].date ? <DateLabel date={transactionData.date}/>  : null}
               <TransactionCard transaction = {transactionData}/>
-          </View>
-      ))}
+            </View>
+          )
+          : null
 
-      {/* The following view component is only used to pad the bottom of the scroll
-        view so that we can see the last card! */}
-      <View style={{height: 300}} />
+        ))}
 
-    </ScrollView>
+        {/*Pad the bottom of the scroll view so that we can see the last card!*/}
+        <View style = {{height: 300}}/>
+
+      </ScrollView>
+
+    </View>
   );
 }
 
 export default TransactionLog;
 
 //The following JSON is temporary!
-const testTransactionsAsJSON: Transaction[] = [
+export const testTransactionsAsJSON: Transaction[] = [
   {
     date: 'Sept. 25, 2021 (Saturday)',
     category: 'Dogecoin Returns',
