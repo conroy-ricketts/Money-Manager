@@ -32,8 +32,7 @@ const styles = StyleSheet.create
     },
     scrollView:
     {
-      marginVertical: 70,
-      position: 'absolute',
+      marginVertical: 80,
     },
 });
 
@@ -97,7 +96,9 @@ function TransactionLog() : JSX.Element {
         {testTransactionsAsJSON.map((transactionData) => (
           
           //Only render a transaction if the user selected it's type in the view toggle
-          transactionData.type == selectedView || selectedView == "all" ?
+          //AND the user selected it's time period in the view toggle
+          (transactionData.type == selectedView || selectedView == "all") &&
+          (transactionData.date == selectedTimePeriod || selectedTimePeriod == "all") ?
           (
             <View style = {styles.cards}>
               <TransactionCard transaction = {transactionData}/>
