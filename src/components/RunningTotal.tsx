@@ -16,7 +16,8 @@ const totalStyles = StyleSheet.create
       width: 333,
       borderRadius: 0,
       borderWidth: 0,
-      borderColor: 'black',
+      borderColor: 'black',      
+      position: 'absolute',
     },
     incomeText:
     {

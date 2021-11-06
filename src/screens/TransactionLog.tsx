@@ -10,6 +10,7 @@ const styles = StyleSheet.create
     {
       flex: 1,
       backgroundColor: '#DBDBD9',
+      alignItems: 'center',
     },
     cards: 
     {
@@ -17,19 +18,28 @@ const styles = StyleSheet.create
       top: 20,
       padding: 3,
     },
+    timeToggle:
+    {
+      top: 20,
+      left: 40,
+      position: 'absolute',
+    },
     viewToggle:
     {
-      paddingTop: 10,
-      paddingLeft: 170,
+      top: 20,
+      right: 32,
+      position: 'absolute',
     },
     scrollView:
     {
-      marginVertical: 10,
+      marginVertical: 70,
+      position: 'absolute',
     },
 });
 
 function TransactionLog() : JSX.Element {
 
+  const [selectedTimePeriod, setSelectedTimePeriod] = useState("all");
   const [selectedView, setSelectedView] = useState("all");
 
   return (
@@ -37,6 +47,26 @@ function TransactionLog() : JSX.Element {
       
       {/*Render the running total*/}
       <RunningTotal/>
+
+      {/*Render the time toggle button*/}
+      <View style = {styles.timeToggle}> 
+
+        <Picker
+          selectedValue = {selectedTimePeriod}
+          style = {{ height: 50, width: 150 }}
+          onValueChange = {(itemValue) => setSelectedTimePeriod(itemValue)}
+        >      
+
+          {/*list options for time toggle*/}
+          <Picker.Item label = "All Time" value = "all" />
+          <Picker.Item label = "Daily" value = "daily" />
+          <Picker.Item label = "Weekly" value = "weekly" />
+          <Picker.Item label = "Monthly" value = "monthly" />
+          <Picker.Item label = "Yearly" value = "yearly" />
+
+        </Picker>     
+
+      </View>    
 
       {/*Render the view toggle button*/}
       <View style = {styles.viewToggle}> 
@@ -48,7 +78,7 @@ function TransactionLog() : JSX.Element {
         >      
 
           {/*list options for view toggle*/}
-          <Picker.Item label = "All" value = "all" />
+          <Picker.Item label = "All Types" value = "all" />
           <Picker.Item label = "Income" value = "income" />
           <Picker.Item label = "Expenses" value = "expense" />
           <Picker.Item label = "Transfers" value = "transfer" />
