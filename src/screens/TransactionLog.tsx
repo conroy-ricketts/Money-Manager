@@ -22,6 +22,10 @@ const styles = StyleSheet.create
       paddingTop: 10,
       paddingLeft: 170,
     },
+    scrollView:
+    {
+      marginVertical: 10,
+    },
 });
 
 function TransactionLog() : JSX.Element {
@@ -57,7 +61,7 @@ function TransactionLog() : JSX.Element {
       <View style = {{height: 10}}/>
 
       {/*Render the transaction cards*/}
-      <ScrollView>
+      <ScrollView style = {styles.scrollView}>
 
         {/*Map an array of our test transactions to transaction cards to be rendered*/}
         {testTransactionsAsJSON.map((transactionData) => (
