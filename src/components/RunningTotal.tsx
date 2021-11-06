@@ -13,7 +13,7 @@ const totalStyles = StyleSheet.create
       alignSelf: 'center',
       backgroundColor: '#DBDBD9',
       height: 12,
-      width: 333,
+      width: 365,
       borderRadius: 0,
       borderWidth: 0,
       borderColor: 'black',      
