@@ -83,7 +83,7 @@ export default function TransactionCard({ transaction }: TransactionProps)
 
   return (
     <View style = {styles.card}>
-      <Text style = {[ styles.normalText, {position: 'absolute', left: 3, top: 5} ]}> {/*accountName*/transaction.date} </Text>
+      <Text style = {[ styles.normalText, {position: 'absolute', left: 3, top: 5} ]}> {accountName} </Text>
       <Text style = {[ styles.normalText, {position: 'absolute', left: 3, bottom: 7} ]}> {categoryName} </Text>
       <Text style = {[ amountStyle, {position: 'absolute', right: 0, top: 15} ]}> {`$${transaction.amount}`} </Text>
     </View>
