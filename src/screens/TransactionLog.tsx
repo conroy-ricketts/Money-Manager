@@ -38,8 +38,13 @@ const styles = StyleSheet.create
 
 function TransactionLog() : JSX.Element {
 
-  const [selectedTimePeriod, setSelectedTimePeriod] = useState("all");
+  const [selectedTimePeriod, setSelectedTimePeriod] = useState("daily");
   const [selectedView, setSelectedView] = useState("all");
+
+  //we should render the most recent transactions by default
+  let currentDay = testTransactionsAsJSON[0].day;
+  let currentMonth = testTransactionsAsJSON[0].month;
+  let currentYear = testTransactionsAsJSON[0].year;
 
   return (
     <View style = {styles.screen}>
@@ -53,11 +58,30 @@ function TransactionLog() : JSX.Element {
         <Picker
           selectedValue = {selectedTimePeriod}
           style = {{ height: 50, width: 150 }}
-          onValueChange = {(itemValue) => setSelectedTimePeriod(itemValue)}
+          onValueChange = {(itemValue) => {
+
+            setSelectedTimePeriod(itemValue);
+
+            if(itemValue == "daily")
+            {
+              currentDay = testTransactionsAsJSON[0].day;
+            }
+            else if(itemValue == "weekly")
+            {
+              currentDay = testTransactionsAsJSON[0].day;
+            }
+            else if(itemValue == "monthly")
+            {
+              currentMonth = testTransactionsAsJSON[0].month;
+            }
+            else if(itemValue == "yearly")
+            {
+              currentYear = testTransactionsAsJSON[0].year;
+            }
+          }}
         >      
 
           {/*list options for time toggle*/}
-          <Picker.Item label = "All Time" value = "all" />
           <Picker.Item label = "Daily" value = "daily" />
           <Picker.Item label = "Weekly" value = "weekly" />
           <Picker.Item label = "Monthly" value = "monthly" />
@@ -94,11 +118,19 @@ function TransactionLog() : JSX.Element {
 
         {/*Map an array of our test transactions to transaction cards to be rendered*/}
         {testTransactionsAsJSON.map((transactionData) => (
-          
+
           //Only render a transaction if the user selected it's type in the view toggle
-          //AND the user selected it's time period in the view toggle
+          //AND if the user selected it's time period
           (transactionData.type == selectedView || selectedView == "all") &&
-          (transactionData.date == selectedTimePeriod || selectedTimePeriod == "all") ?
+          (
+            (selectedTimePeriod == "daily" && transactionData.day == currentDay) ||
+            (selectedTimePeriod == "weekly" && transactionData.day <= currentDay && 
+            transactionData.day > currentDay - 7 &&
+            transactionData.month == currentMonth && 
+            transactionData.year == currentYear) ||
+            (selectedTimePeriod == "monthly" && transactionData.month == currentMonth) ||
+            (selectedTimePeriod == "yearly" && transactionData.year == currentYear)
+          ) ?
           (
             <View style = {styles.cards}>
               <TransactionCard transaction = {transactionData}/>
@@ -120,9 +152,13 @@ function TransactionLog() : JSX.Element {
 export default TransactionLog;
 
 //The following JSON is temporary!
+//The most recent transaction goes to the top of this array.
 export const testTransactionsAsJSON: Transaction[] = [
   {
     date: 'Sept. 25, 2021 (Saturday)',
+    month: 9,
+    day: 25,
+    year: 2021,
     category: 'A Really Really Long Category Name',
     subCategory: '',
     account: 'A Really Really Long Account Name',
@@ -131,6 +167,9 @@ export const testTransactionsAsJSON: Transaction[] = [
   },
   {
     date: 'Sept. 25, 2021 (Saturday)',
+    month: 9,
+    day: 25,
+    year: 2021,
     category: 'Dogecoin Returns',
     subCategory: '',
     account: 'Crypto Wallet',
@@ -139,6 +178,9 @@ export const testTransactionsAsJSON: Transaction[] = [
   },
   {
     date: 'Sept. 25, 2021 (Saturday)',
+    month: 9,
+    day: 25,
+    year: 2021,
     category: 'Food',
     subCategory: 'Fast Food',
     account: 'Checking Account',
@@ -147,6 +189,9 @@ export const testTransactionsAsJSON: Transaction[] = [
   },
   {
     date: 'Sept. 25, 2021 (Saturday)',
+    month: 9,
+    day: 25,
+    year: 2021,
     category: 'Food',
     subCategory: 'Fast Food',
     account: 'Checking Account',
@@ -155,6 +200,9 @@ export const testTransactionsAsJSON: Transaction[] = [
   },
   {
     date: 'Sept. 25, 2021 (Saturday)',
+    month: 9,
+    day: 25,
+    year: 2021,
     category: 'Food',
     subCategory: 'Fast Food',
     account: 'Checking Account',
@@ -163,6 +211,9 @@ export const testTransactionsAsJSON: Transaction[] = [
   },
   {
     date: 'Sept. 25, 2021 (Saturday)',
+    month: 9,
+    day: 25,
+    year: 2021,
     category: 'Food',
     subCategory: 'Fast Food',
     account: 'Checking Account',
@@ -171,6 +222,9 @@ export const testTransactionsAsJSON: Transaction[] = [
   },
   {
     date: 'Sept. 24, 2021 (Friday)',
+    month: 9,
+    day: 24,
+    year: 2021,
     category: 'Transfer',
     subCategory: '',
     account: 'Checking Account -> Savings Account',
@@ -179,6 +233,9 @@ export const testTransactionsAsJSON: Transaction[] = [
   },
   {
     date: 'Sept. 24, 2021 (Friday)',
+    month: 9,
+    day: 24,
+    year: 2021,
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
@@ -187,6 +244,9 @@ export const testTransactionsAsJSON: Transaction[] = [
   },
   {
     date: 'Sept. 23, 2021 (Thursday)',
+    month: 9,
+    day: 23,
+    year: 2021,
     category: 'Salary',
     subCategory: '',
     account: 'Checking Account',
@@ -195,6 +255,9 @@ export const testTransactionsAsJSON: Transaction[] = [
   },
   {
     date: 'Sept. 22, 2021 (Wednesday)',
+    month: 9,
+    day: 22,
+    year: 2021,
     category: 'Haircut',
     subCategory: '',
     account: 'Credit Card',
@@ -203,6 +266,9 @@ export const testTransactionsAsJSON: Transaction[] = [
   },
   {
     date: 'Sept. 22, 2021 (Wednesday)',
+    month: 9,
+    day: 22,
+    year: 2021,
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
@@ -211,6 +277,9 @@ export const testTransactionsAsJSON: Transaction[] = [
   },
   {
     date: 'Sept. 22, 2021 (Wednesday)',
+    month: 9,
+    day: 22,
+    year: 2021,
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
@@ -219,6 +288,53 @@ export const testTransactionsAsJSON: Transaction[] = [
   },
   {
     date: 'Sept. 22, 2021 (Wednesday)',
+    month: 9,
+    day: 22,
+    year: 2021,
+    category: 'Groceries',
+    subCategory: '',
+    account: 'Checking Account',
+    type: 'expense',
+    amount: 214,
+  },
+  {
+    date: 'Oct. 22, 2021 (Wednesday)',
+    month: 10,
+    day: 22,
+    year: 2021,
+    category: 'Groceries',
+    subCategory: '',
+    account: 'Checking Account',
+    type: 'expense',
+    amount: 23.12,
+  },
+  {
+    date: 'Oct. 22, 2021 (Wednesday)',
+    month: 10,
+    day: 22,
+    year: 2021,
+    category: 'Groceries',
+    subCategory: '',
+    account: 'Checking Account',
+    type: 'expense',
+    amount: 214,
+  },
+  {
+    date: 'Jan. 22, 2022 (Wednesday)',
+    month: 1,
+    day: 22,
+    year: 2022,
+    category: 'Groceries',
+    subCategory: '',
+    account: 'Checking Account',
+    type: 'expense',
+    amount: 23.12,
+  },
+  {
+    date: 'Jan. 22, 2022 (Wednesday)',
+    month: 1,
+    day: 22,
+    year: 2022,
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
