@@ -66,8 +66,8 @@ function RunningTotal()
     //<Text style = {[ totalStyles.balanceText, {position: 'absolute', right: 111, top: 50} ]}> {balance} </Text>
     return (
       <View style = {totalStyles.card}>
-        <Text style = {[ totalStyles.incomeText, {position: 'absolute', left: 0, top: 0} ]}> {"Total Income: $" + income} </Text>
-        <Text style = {[ totalStyles.expenseText, {position: 'absolute', right: 5, top: 0} ]}> {"Total Expenses: $" + expenses} </Text>
+        <Text style = {[ totalStyles.incomeText, {position: 'absolute', left: 0, top: 0} ]}> {"Total Income: $" + income.toFixed(2)} </Text>
+        <Text style = {[ totalStyles.expenseText, {position: 'absolute', right: 5, top: 0} ]}> {"Total Expenses: $" + expenses.toFixed(2)} </Text>
       </View>
     );
 }
