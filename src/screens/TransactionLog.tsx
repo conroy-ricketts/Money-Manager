@@ -97,7 +97,7 @@ function TransactionLog() : JSX.Element {
       <ScrollView style = {styles.scrollView}>
 
         {/*Map an array of our test transactions to transaction cards to be rendered*/}
-        {testTransactionsAsJSON.map((transactionData) => (
+        {testTransactionsAsJSON.map((transactionData, index) => (
 
           //Only render a transaction if the user selected it's type in the view toggle
           //AND if the user selected it's time period
@@ -112,7 +112,7 @@ function TransactionLog() : JSX.Element {
             (selectedTimePeriod == 3 && transactionData.year == currentYear)
           ) ?
           (
-            <View style = {styles.cards}>
+            <View style = {styles.cards} key = {index}>
               <TransactionCard transaction = {transactionData}/>
             </View>
           )

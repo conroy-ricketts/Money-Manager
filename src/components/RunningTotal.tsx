@@ -22,21 +22,18 @@ const totalStyles = StyleSheet.create
     incomeText:
     {
       fontWeight: "bold",
-      fontFamily: "Times New Roman",
       fontSize: normalTextSize,
       color: '#008315',
     },
     expenseText:
     {
       fontWeight: "bold",
-      fontFamily: "Times New Roman",
       fontSize: normalTextSize,
       color: '#DB0000',
     },
     balanceText:
     {
       fontWeight: "bold",
-      fontFamily: "Times New Roman",
       fontSize: normalTextSize,
       color: '#0057D9',
     },    
