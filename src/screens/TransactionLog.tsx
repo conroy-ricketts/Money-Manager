@@ -59,6 +59,16 @@ const styles = StyleSheet.create
     },
 });
 
+function DateLabel({ date }: { date: string}): JSX.Element {
+  return (
+    <View style={{ width: 333, height: 40, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0 }}>
+      <View style={{flex: 1, height: 2, backgroundColor: '#000', margin: 0, padding: 0}} />
+      <Text style={{alignSelf: 'center', justifyContent: 'center', backgroundColor: '#DBDBD9', margin: 0, padding: 5}}>{date}</Text>
+      <View style={{flex: 1, height: 2, backgroundColor: '#000', margin: 0, padding: 0}} />
+    </View>
+  )
+}
+ 
 function TransactionLog() : JSX.Element {
 
   //0 for daily, 1 for weekly, 2 for monthly, 3 for yearly
@@ -98,7 +108,6 @@ function TransactionLog() : JSX.Element {
 
         {/*Map an array of our test transactions to transaction cards to be rendered*/}
         {testTransactionsAsJSON.map((transactionData, index) => (
-
           //Only render a transaction if the user selected it's type in the view toggle
           //AND if the user selected it's time period
           (transactionData.type == selectedView || selectedView == 0) &&
@@ -113,6 +122,7 @@ function TransactionLog() : JSX.Element {
           ) ?
           (
             <View style = {styles.cards} key = {index}>
+              {index === 0 || transactionData.date !== testTransactionsAsJSON[index-1].date || transactionData.type !== testTransactionsAsJSON[index-1].type && selectedView !== 'all' ? <DateLabel date={transactionData.date}/>  : null}
               <TransactionCard transaction = {transactionData}/>
             </View>
           )
