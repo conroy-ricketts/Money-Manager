@@ -1,7 +1,6 @@
 import React, { useState }  from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, ScrollView, StyleSheet, View, Text } from 'react-native';
 import TransactionCard, { Transaction } from '../components/TransactionCards';
-import { Picker } from '@react-native-picker/picker';
 import RunningTotal from '../components/RunningTotal';
 
 const styles = StyleSheet.create
@@ -20,15 +19,39 @@ const styles = StyleSheet.create
     },
     timeToggle:
     {
-      top: 20,
-      left: 40,
+      width: 100,
+      height: 35,
       position: 'absolute',
+      top: 30,
+      left: 60,
+      borderWidth: 2,
+      borderColor: 'black',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 10,
+    },
+    timeToggleText:
+    {
+      color: 'black',
+      fontSize: 14,
     },
     viewToggle:
     {
-      top: 20,
-      right: 32,
+      width: 100,
+      height: 35,
       position: 'absolute',
+      top: 30,
+      right: 60,
+      borderWidth: 2,
+      borderColor: 'black',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 10,
+    },
+    viewToggleText:
+    {
+      color: 'black',
+      fontSize: 14,
     },
     scrollView:
     {
@@ -38,8 +61,13 @@ const styles = StyleSheet.create
 
 function TransactionLog() : JSX.Element {
 
-  const [selectedTimePeriod, setSelectedTimePeriod] = useState("daily");
-  const [selectedView, setSelectedView] = useState("all");
+  //0 for daily, 1 for weekly, 2 for monthly, 3 for yearly
+  const [selectedTimePeriod, setSelectedTimePeriod] = useState(0);
+  const timeTitles: Array<string> = ['Daily', 'Weekly', 'Monthly', 'Yearly'];
+
+  //0 for all, 1 for income, 2 for expenses, 3 for transfers
+  const [selectedView, setSelectedView] = useState(0);
+  const viewTitles: Array<string> = ['All', 'Income', 'Expenses', 'Transfers'];
 
   //we should render the most recent transactions by default
   let currentDay = testTransactionsAsJSON[0].day;
@@ -53,62 +81,14 @@ function TransactionLog() : JSX.Element {
       <RunningTotal/>
 
       {/*Render the time toggle button*/}
-      <View style = {styles.timeToggle}> 
-
-        <Picker
-          selectedValue = {selectedTimePeriod}
-          style = {{ height: 50, width: 150 }}
-          onValueChange = {(itemValue) => {
-
-            setSelectedTimePeriod(itemValue);
-
-            if(itemValue == "daily")
-            {
-              currentDay = testTransactionsAsJSON[0].day;
-            }
-            else if(itemValue == "weekly")
-            {
-              currentDay = testTransactionsAsJSON[0].day;
-            }
-            else if(itemValue == "monthly")
-            {
-              currentMonth = testTransactionsAsJSON[0].month;
-            }
-            else if(itemValue == "yearly")
-            {
-              currentYear = testTransactionsAsJSON[0].year;
-            }
-          }}
-        >      
-
-          {/*list options for time toggle*/}
-          <Picker.Item label = "Daily" value = "daily" />
-          <Picker.Item label = "Weekly" value = "weekly" />
-          <Picker.Item label = "Monthly" value = "monthly" />
-          <Picker.Item label = "Yearly" value = "yearly" />
-
-        </Picker>     
-
-      </View>    
+      <TouchableOpacity style = {styles.timeToggle} onPress = {() => setSelectedTimePeriod((selectedTimePeriod + 1) % 4)}>
+        <Text style = {styles.timeToggleText}>{timeTitles[selectedTimePeriod]}</Text>
+      </TouchableOpacity>
 
       {/*Render the view toggle button*/}
-      <View style = {styles.viewToggle}> 
-
-        <Picker
-          selectedValue = {selectedView}
-          style = {{ height: 50, width: 150 }}
-          onValueChange = {(itemValue) => setSelectedView(itemValue)}
-        >      
-
-          {/*list options for view toggle*/}
-          <Picker.Item label = "All Types" value = "all" />
-          <Picker.Item label = "Income" value = "income" />
-          <Picker.Item label = "Expenses" value = "expense" />
-          <Picker.Item label = "Transfers" value = "transfer" />
-
-        </Picker>     
-
-      </View>       
+      <TouchableOpacity style = {styles.viewToggle} onPress = {() => setSelectedView((selectedView + 1) % 4)}>
+          <Text style = {styles.viewToggleText}>{viewTitles[selectedView]}</Text>
+      </TouchableOpacity>
 
       {/*Pad the top of the scroll view so that it does not get overlapped*/}
       <View style = {{height: 10}}/>
@@ -121,15 +101,15 @@ function TransactionLog() : JSX.Element {
 
           //Only render a transaction if the user selected it's type in the view toggle
           //AND if the user selected it's time period
-          (transactionData.type == selectedView || selectedView == "all") &&
+          (transactionData.type == selectedView || selectedView == 0) &&
           (
-            (selectedTimePeriod == "daily" && transactionData.day == currentDay) ||
-            (selectedTimePeriod == "weekly" && transactionData.day <= currentDay && 
+            (selectedTimePeriod == 0 && transactionData.day == currentDay) ||
+            (selectedTimePeriod == 1 && transactionData.day <= currentDay && 
             transactionData.day > currentDay - 7 &&
             transactionData.month == currentMonth && 
             transactionData.year == currentYear) ||
-            (selectedTimePeriod == "monthly" && transactionData.month == currentMonth) ||
-            (selectedTimePeriod == "yearly" && transactionData.year == currentYear)
+            (selectedTimePeriod == 2 && transactionData.month == currentMonth) ||
+            (selectedTimePeriod == 3 && transactionData.year == currentYear)
           ) ?
           (
             <View style = {styles.cards}>
@@ -162,7 +142,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'A Really Really Long Category Name',
     subCategory: '',
     account: 'A Really Really Long Account Name',
-    type: 'income',
+    type: 1,
     amount: 100000,
   },
   {
@@ -173,7 +153,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Dogecoin Returns',
     subCategory: '',
     account: 'Crypto Wallet',
-    type: 'income',
+    type: 1,
     amount: 100000,
   },
   {
@@ -184,7 +164,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Food',
     subCategory: 'Fast Food',
     account: 'Checking Account',
-    type: 'expense',
+    type: 2,
     amount: 24.12,
   },
   {
@@ -195,7 +175,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Food',
     subCategory: 'Fast Food',
     account: 'Checking Account',
-    type: 'expense',
+    type: 2,
     amount: 14.15,
   },
   {
@@ -206,7 +186,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Food',
     subCategory: 'Fast Food',
     account: 'Checking Account',
-    type: 'expense',
+    type: 2,
     amount: 54.20,
   },
   {
@@ -217,7 +197,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Food',
     subCategory: 'Fast Food',
     account: 'Checking Account',
-    type: 'expense',
+    type: 2,
     amount: 20.12,
   },
   {
@@ -228,7 +208,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Transfer',
     subCategory: '',
     account: 'Checking Account -> Savings Account',
-    type: 'transfer',
+    type: 3,
     amount: 100,
   },
   {
@@ -239,7 +219,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
-    type: 'expense',
+    type: 2,
     amount: 54.12,
   },
   {
@@ -250,7 +230,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Salary',
     subCategory: '',
     account: 'Checking Account',
-    type: 'income',
+    type: 1,
     amount: 5652.40,
   },
   {
@@ -261,7 +241,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Haircut',
     subCategory: '',
     account: 'Credit Card',
-    type: 'expense',
+    type: 2,
     amount: 30,
   },
   {
@@ -272,7 +252,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
-    type: 'expense',
+    type: 2,
     amount: 54.12,
   },
   {
@@ -283,7 +263,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
-    type: 'expense',
+    type: 2,
     amount: 23.12,
   },
   {
@@ -294,7 +274,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
-    type: 'expense',
+    type: 2,
     amount: 214,
   },
   {
@@ -305,7 +285,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
-    type: 'expense',
+    type: 2,
     amount: 23.12,
   },
   {
@@ -316,7 +296,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
-    type: 'expense',
+    type: 2,
     amount: 214,
   },
   {
@@ -327,7 +307,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
-    type: 'expense',
+    type: 2,
     amount: 23.12,
   },
   {
@@ -338,7 +318,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
-    type: 'expense',
+    type: 2,
     amount: 214,
   },
 ];

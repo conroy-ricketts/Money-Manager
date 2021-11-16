@@ -43,7 +43,7 @@ export interface Transaction
   category: string;
   subCategory: string;
   account: string;
-  type: 'income' | 'expense' | 'transfer';
+  type: number; //set this to 1 for income, 2 for expenses, or 3 for transfers
   amount: number;
 }
 
@@ -68,11 +68,11 @@ export default function TransactionCard({ transaction }: TransactionProps)
     transactionCategory.length > truncateSize ? transactionCategory.substring(0, truncateSize) + "..." :
     transactionCategory;
 
-  if(transaction.type == 'income')
+  if(transaction.type == 1)
   {
     amountStyle = styles.incomeText;
   }
-  else if(transaction.type == 'expense')
+  else if(transaction.type == 2)
   {
     amountStyle = styles.expenseText;
   }

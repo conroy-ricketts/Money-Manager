@@ -9,7 +9,7 @@ const totalStyles = StyleSheet.create
 ({
     card: 
     {
-      top: 62,
+      top: 75,
       alignSelf: 'center',
       backgroundColor: '#DBDBD9',
       height: 12,
@@ -50,12 +50,12 @@ function RunningTotal()
     for(var i = 0; i < testTransactionsAsJSON.length; i++)
     {
       
-        if(testTransactionsAsJSON[i].type == "income")
+        if(testTransactionsAsJSON[i].type == 1)
         {
             income += testTransactionsAsJSON[i].amount;
 
         }
-        else if(testTransactionsAsJSON[i].type == "expense")
+        else if(testTransactionsAsJSON[i].type == 2)
         {
             expenses += testTransactionsAsJSON[i].amount;
         }
