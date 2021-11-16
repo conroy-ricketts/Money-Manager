@@ -102,27 +102,12 @@ export default function TransactionCard({ transaction }: TransactionProps)
       denom = "B";
       toggleAltFormat = true;
   }
-
-
-  if(toggleAltFormat)
-  {
-    return (
-      <View style = {styles.card}>
-        <Text style = {[ styles.normalText, {position: 'absolute', left: 0, top: 0} ]}> {transaction.date} </Text>
-        <Text style = {[ styles.normalText, {position: 'absolute', left: 0, bottom: 1} ]}> {transactionCategory} </Text>
-        <Text style = {[ styles.normalText, {position: 'absolute', left: 125, top: 20} ]}> {transaction.account} </Text>
-        <Text style = {[ amountStyle, {position: 'absolute', right: 0, top: 15} ]}> {`$${pseudoAmount.toFixed(2) + denom}`} </Text>
-      </View>
-    );
-  }
-  else
-  {
+  
   return (
     <View style = {styles.card}>
       <Text style = {[ styles.normalText, {position: 'absolute', left: 3, top: 5} ]}> {accountName} </Text>
       <Text style = {[ styles.normalText, {position: 'absolute', left: 3, bottom: 7} ]}> {categoryName} </Text>
-      <Text style = {[ amountStyle, {position: 'absolute', right: 0, top: 15} ]}> {`$${transaction.amount}`} </Text>
+      <Text style = {[ amountStyle, {position: 'absolute', right: 0, top: 15} ]}> {toggleAltFormat ? `$${pseudoAmount.toFixed(2) + denom}` : `$${transaction.amount}`} </Text>
     </View>
   );
-  }
 }

@@ -122,7 +122,12 @@ function TransactionLog() : JSX.Element {
           ) ?
           (
             <View style = {styles.cards} key = {index}>
-              {index === 0 || transactionData.date !== testTransactionsAsJSON[index-1].date || transactionData.type !== testTransactionsAsJSON[index-1].type && selectedView !== 'all' ? <DateLabel date={transactionData.date}/>  : null}
+              { 
+                index === 0 || transactionData.date !== testTransactionsAsJSON[index-1].date || 
+                transactionData.type !== testTransactionsAsJSON[index-1].type && selectedView !== 0 ?
+                <DateLabel date={transactionData.date}/>  
+                : null
+              }
               <TransactionCard transaction = {transactionData}/>
             </View>
           )
