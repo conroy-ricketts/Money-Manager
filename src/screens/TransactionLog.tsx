@@ -57,6 +57,26 @@ const styles = StyleSheet.create
     {
       marginVertical: 80,
     },
+    previousButton:
+    {
+      width: 35,
+      height: 35,
+      position: 'absolute',
+      top: 27,
+      left: 13,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    nextButton:
+    {
+      width: 35,
+      height: 35,
+      position: 'absolute',
+      top: 27,
+      right: 13,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
 });
 
 function DateLabel({ date }: { date: string}): JSX.Element {
@@ -80,15 +100,118 @@ function TransactionLog() : JSX.Element {
   const viewTitles: Array<string> = ['All', 'Income', 'Expenses', 'Transfers'];
 
   //we should render the most recent transactions by default
-  let currentDay = testTransactionsAsJSON[0].day;
-  let currentMonth = testTransactionsAsJSON[0].month;
-  let currentYear = testTransactionsAsJSON[0].year;
+  const [currentDay, setCurrentDay] = useState(testTransactionsAsJSON[0].day);
+  const [currentMonth, setCurrentMonth] = useState(testTransactionsAsJSON[0].month);
+  const [currentYear, setCurrentYear] = useState(testTransactionsAsJSON[0].year);
 
   return (
     <View style = {styles.screen}>
       
       {/*Render the running total*/}
       <RunningTotal/>
+
+      {/*Render the previos button*/}
+      <TouchableOpacity style = {styles.previousButton} onPress = {() => {
+        if(selectedTimePeriod == 0)
+        {
+          setCurrentDay(currentDay - 1);
+
+          if(currentDay < 1)
+          {
+            setCurrentDay(31);
+            setCurrentMonth(currentMonth - 1);
+
+            if(currentMonth < 1)
+            {
+              setCurrentMonth(12);
+              setCurrentYear(currentYear - 1);
+            }
+          }
+        }
+        else if(selectedTimePeriod == 1)
+        {
+          setCurrentDay(currentDay - 7);
+
+          if(currentDay < 1)
+          {
+            setCurrentDay(31);
+            setCurrentMonth(currentMonth - 1);
+
+            if(currentMonth < 1)
+            {
+              setCurrentMonth(12);
+              setCurrentYear(currentYear - 1);
+            }
+          }
+        }
+        else if(selectedTimePeriod == 2)
+        {
+          setCurrentMonth(currentMonth - 1);
+
+          if(currentMonth < 1)
+          {
+            setCurrentMonth(12);
+            setCurrentYear(currentYear - 1);
+          }
+        }
+        else if(selectedTimePeriod == 3)
+        {
+          setCurrentYear(currentYear - 1);
+        }
+      }}>
+        <Text style = {{fontSize: 30}}>{'<'}</Text>
+      </TouchableOpacity>
+
+      {/*Render the next button*/}
+      <TouchableOpacity style = {styles.nextButton} onPress = {() => {
+        if(selectedTimePeriod == 0)
+        {
+          setCurrentDay(currentDay + 1);
+
+          if(currentDay > 31)
+          {
+            setCurrentDay(1);
+            setCurrentMonth(currentMonth + 1);
+
+            if(currentMonth > 12)
+            {
+              setCurrentMonth(1);
+              setCurrentYear(currentYear + 1);
+            }
+          }
+        }
+        else if(selectedTimePeriod == 1)
+        {
+          setCurrentDay(currentDay + 7);
+
+          if(currentDay > 31)
+          {
+            setCurrentDay(1);
+            setCurrentMonth(currentMonth + 1);
+
+            if(currentMonth > 12)
+            {
+              setCurrentMonth(1);
+              setCurrentYear(currentYear + 1);
+            }
+          }
+        }
+        else if(selectedTimePeriod == 2)
+        {
+          setCurrentMonth(currentMonth + 1);
+
+          if(currentMonth > 12)
+          {
+            setCurrentMonth(1);
+            setCurrentYear(currentYear + 1);
+          }
+        }
+        else if(selectedTimePeriod == 3)
+        {
+          setCurrentYear(currentYear + 1);
+        }}}>
+        <Text style = {{fontSize: 30}}>{'>'}</Text>
+      </TouchableOpacity>
 
       {/*Render the time toggle button*/}
       <TouchableOpacity style = {styles.timeToggle} onPress = {() => setSelectedTimePeriod((selectedTimePeriod + 1) % 4)}>
@@ -112,11 +235,13 @@ function TransactionLog() : JSX.Element {
           //AND if the user selected it's time period
           (transactionData.type == selectedView || selectedView == 0) &&
           (
-            (selectedTimePeriod == 0 && transactionData.day == currentDay) ||
+            (selectedTimePeriod == 0 && transactionData.day == currentDay &&
+              transactionData.month == currentMonth &&
+              transactionData.year == currentYear) ||
             (selectedTimePeriod == 1 && transactionData.day <= currentDay && 
-            transactionData.day > currentDay - 7 &&
-            transactionData.month == currentMonth && 
-            transactionData.year == currentYear) ||
+              transactionData.day > currentDay - 7 &&
+              transactionData.month == currentMonth && 
+              transactionData.year == currentYear) ||
             (selectedTimePeriod == 2 && transactionData.month == currentMonth) ||
             (selectedTimePeriod == 3 && transactionData.year == currentYear)
           ) ?
@@ -282,9 +407,9 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 23.12,
   },
   {
-    date: 'Sept. 22, 2021 (Wednesday)',
+    date: 'Sept. 14, 2021 (Wednesday)',
     month: 9,
-    day: 22,
+    day: 14,
     year: 2021,
     category: 'Groceries',
     subCategory: '',
@@ -293,8 +418,19 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 214,
   },
   {
-    date: 'Oct. 22, 2021 (Wednesday)',
-    month: 10,
+    date: 'August. 31, 2021 (Wednesday)',
+    month: 8,
+    day: 31,
+    year: 2021,
+    category: 'Groceries',
+    subCategory: '',
+    account: 'Checking Account',
+    type: 2,
+    amount: 23.12,
+  },
+  {
+    date: 'August. 22, 2021 (Wednesday)',
+    month: 8,
     day: 22,
     year: 2021,
     category: 'Groceries',
@@ -304,8 +440,8 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 23.12,
   },
   {
-    date: 'Oct. 22, 2021 (Wednesday)',
-    month: 10,
+    date: 'Aug. 22, 2021 (Wednesday)',
+    month: 8,
     day: 22,
     year: 2021,
     category: 'Groceries',
@@ -315,10 +451,10 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 214,
   },
   {
-    date: 'Jan. 22, 2022 (Wednesday)',
+    date: 'Jan. 22, 2020 (Wednesday)',
     month: 1,
     day: 22,
-    year: 2022,
+    year: 2020,
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
@@ -326,10 +462,10 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 23.12,
   },
   {
-    date: 'Jan. 22, 2022 (Wednesday)',
+    date: 'Jan. 22, 2020 (Wednesday)',
     month: 1,
     day: 22,
-    year: 2022,
+    year: 2020,
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
