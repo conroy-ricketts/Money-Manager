@@ -14,7 +14,7 @@ const styles = StyleSheet.create
     },
     normalText:
     {
-      fontSize: 12,
+      fontSize: 14,
       color: 'black',
     },
     incomeText:
@@ -37,10 +37,13 @@ const styles = StyleSheet.create
 export interface Transaction
 {
   date: string;
+  month: number,
+  day: number,
+  year: number,
   category: string;
   subCategory: string;
   account: string;
-  type: 'income' | 'expense' | 'transfer';
+  type: number; //set this to 1 for income, 2 for expenses, or 3 for transfers
   amount: number;
 }
 
@@ -59,11 +62,20 @@ export default function TransactionCard({ transaction }: TransactionProps)
     transaction.subCategory == "" ? transaction.category :
     `${transaction.category} - ${transaction.subCategory}`;
 
-  if(transaction.type == 'income')
+  {/*truncate both the account name and the category name so that they do not overlap with the transcation amount*/}
+  let truncateSize = 30;
+  let accountName: string =
+    transaction.account.length > truncateSize ? transaction.account.substring(0, truncateSize) + "..." :
+    transaction.account;
+  let categoryName: string =
+    transactionCategory.length > truncateSize ? transactionCategory.substring(0, truncateSize) + "..." :
+    transactionCategory;
+
+  if(transaction.type == 1)
   {
     amountStyle = styles.incomeText;
   }
-  else if(transaction.type == 'expense')
+  else if(transaction.type == 2)
   {
     amountStyle = styles.expenseText;
   }
@@ -90,26 +102,12 @@ export default function TransactionCard({ transaction }: TransactionProps)
       denom = "B";
       toggleAltFormat = true;
   }
-
-
-  if(toggleAltFormat)
-  {
-    return (
-      <View style = {styles.card}>
-        <Text style = {[ styles.normalText, {position: 'absolute', left: 0, bottom: 20} ]}> {transactionCategory} </Text>
-        <Text style = {[ styles.normalText, {position: 'absolute', left: 125, top: 20} ]}> {transaction.account} </Text>
-        <Text style = {[ amountStyle, {position: 'absolute', right: 0, top: 15} ]}> {`$${pseudoAmount.toFixed(2) + denom}`} </Text>
-      </View>
-    );
-  }
-  else
-  {
+  
   return (
     <View style = {styles.card}>
-      <Text style = {[ styles.normalText, {position: 'absolute', left: 0, top: 20} ]}> {transactionCategory} </Text>
-      <Text style = {[ styles.normalText, {position: 'absolute', left: 125, top: 20} ]}> {transaction.account} </Text>
-      <Text style = {[ amountStyle, {position: 'absolute', right: 0, top: 15} ]}> {`$${transaction.amount}`} </Text>
+      <Text style = {[ styles.normalText, {position: 'absolute', left: 3, top: 5} ]}> {accountName} </Text>
+      <Text style = {[ styles.normalText, {position: 'absolute', left: 3, bottom: 7} ]}> {categoryName} </Text>
+      <Text style = {[ amountStyle, {position: 'absolute', right: 0, top: 15} ]}> {toggleAltFormat ? `$${pseudoAmount.toFixed(2) + denom}` : `$${transaction.amount}`} </Text>
     </View>
   );
-  }
 }

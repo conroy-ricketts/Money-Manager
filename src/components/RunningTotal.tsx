@@ -9,33 +9,31 @@ const totalStyles = StyleSheet.create
 ({
     card: 
     {
-      top: 62,
+      top: 75,
       alignSelf: 'center',
       backgroundColor: '#DBDBD9',
       height: 12,
-      width: 333,
+      width: 365,
       borderRadius: 0,
       borderWidth: 0,
-      borderColor: 'black',
+      borderColor: 'black',      
+      position: 'absolute',
     },
     incomeText:
     {
       fontWeight: "bold",
-      fontFamily: "Times New Roman",
       fontSize: normalTextSize,
       color: '#008315',
     },
     expenseText:
     {
       fontWeight: "bold",
-      fontFamily: "Times New Roman",
       fontSize: normalTextSize,
       color: '#DB0000',
     },
     balanceText:
     {
       fontWeight: "bold",
-      fontFamily: "Times New Roman",
       fontSize: normalTextSize,
       color: '#0057D9',
     },    
@@ -53,12 +51,12 @@ function RunningTotal()
     for(var i = 0; i < testTransactionsAsJSON.length; i++)
     {
       
-        if(testTransactionsAsJSON[i].type == "income")
+        if(testTransactionsAsJSON[i].type == 1)
         {
             income += testTransactionsAsJSON[i].amount;
 
         }
-        else if(testTransactionsAsJSON[i].type == "expense")
+        else if(testTransactionsAsJSON[i].type == 2)
         {
             expenses += testTransactionsAsJSON[i].amount;
         }
@@ -100,11 +98,11 @@ function RunningTotal()
         Indenom = "B";
     }
 
-      return (
-        <View style = {totalStyles.card}>
-          <Text style = {[ totalStyles.incomeText, {position: 'absolute', left: 0, top: 0} ]}> {"Total Income: $" + pseudoIncome.toFixed(2) + Indenom} </Text>
-          <Text style = {[ totalStyles.expenseText, {position: 'absolute', right: 5, top: 0} ]}> {"Total Expenses: $" + pseudoExpense.toFixed(2) + Exdenom} </Text>
-        </View>
-      );
+    return (
+      <View style = {totalStyles.card}>
+        <Text style = {[ totalStyles.incomeText, {position: 'absolute', left: 0, top: 0} ]}> {"Total Income: $" + pseudoIncome.toFixed(2) + Indenom} </Text>
+        <Text style = {[ totalStyles.expenseText, {position: 'absolute', right: 5, top: 0} ]}> {"Total Expenses: $" + pseudoExpense.toFixed(2) + Exdenom} </Text>
+      </View>
+    );
 }
 export default RunningTotal;
