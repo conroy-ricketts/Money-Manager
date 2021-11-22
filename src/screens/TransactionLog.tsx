@@ -1,5 +1,5 @@
 import React, { useState }  from 'react';
-import { TouchableOpacity, ScrollView, StyleSheet, View, Text } from 'react-native';
+import { TouchableOpacity, ScrollView, StyleSheet, Modal, View, Text, TextInput } from 'react-native';
 import TransactionCard, { Transaction } from '../components/TransactionCards';
 import RunningTotal from '../components/RunningTotal';
 
@@ -77,6 +77,36 @@ const styles = StyleSheet.create
       alignItems: 'center',
       justifyContent: 'center',
     },
+    editTransactionModal:
+    {
+      flex: 1,
+      borderWidth: 2,
+      borderColor: 'black',
+      margin: 5,
+      backgroundColor: '#DBDBD9',
+      borderRadius: 20,
+      alignItems: 'center',
+    },
+    closeEditTransactionModalButton:
+    {
+      position: 'absolute',
+      width: 150,
+      height: 35,
+      borderWidth: 2,
+      bottom: 20,
+      borderColor: 'black',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 10,
+    },
+    textInputBox:
+    {
+      color: 'black',
+      borderColor: 'black',
+      borderWidth: 2,
+      width: 300,
+      paddingHorizontal: 10,
+    },
 });
 
 function DateLabel({ date }: { date: string}): JSX.Element {
@@ -103,6 +133,8 @@ function TransactionLog() : JSX.Element {
   const [currentDay, setCurrentDay] = useState(testTransactionsAsJSON[0].day);
   const [currentMonth, setCurrentMonth] = useState(testTransactionsAsJSON[0].month);
   const [currentYear, setCurrentYear] = useState(testTransactionsAsJSON[0].year);
+  
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style = {styles.screen}>
@@ -246,7 +278,7 @@ function TransactionLog() : JSX.Element {
             (selectedTimePeriod == 3 && transactionData.year == currentYear)
           ) ?
           (
-            <View style = {styles.cards} key = {index}>
+            <TouchableOpacity style = {styles.cards} onPress = {() => setModalVisible(!modalVisible)} key = {index}>
               { 
                 index === 0 || transactionData.date !== testTransactionsAsJSON[index-1].date || 
                 transactionData.type !== testTransactionsAsJSON[index-1].type && selectedView !== 0 ?
@@ -254,7 +286,7 @@ function TransactionLog() : JSX.Element {
                 : null
               }
               <TransactionCard transaction = {transactionData}/>
-            </View>
+            </TouchableOpacity>
           )
           : null
 
@@ -262,6 +294,81 @@ function TransactionLog() : JSX.Element {
 
         {/*Pad the bottom of the scroll view so that we can see the last card!*/}
         <View style = {{height: 300}}/>
+
+        {/*Edit transaction modal*/}
+        <Modal
+          animationType = 'slide'
+          transparent = {true}
+          visible = {modalVisible}
+          onRequestClose = {() => setModalVisible(!modalVisible)}
+        >
+          <View style = {styles.editTransactionModal}>
+
+            <View style = {{padding: 15}}/>
+            <Text>{"Date (MM-DD-YYYY)"}</Text>
+
+            <View style = {{padding: 5}}/>
+            <TextInput 
+              style = {styles.textInputBox}
+              onEndEditing = {(value) => {
+              }}
+            />
+
+            <View style = {{padding: 15}}/>
+            <Text>{"Category (be consistent!)"}</Text>
+
+            <View style = {{padding: 5}}/>
+            <TextInput 
+              style = {styles.textInputBox}
+              onEndEditing = {(value) => {
+              }}
+            />
+            
+            <View style = {{padding: 15}}/>
+            <Text>{"Subcategory (be consistent!)"}</Text>
+
+            <View style = {{padding: 5}}/>
+            <TextInput 
+              style = {styles.textInputBox}
+              onEndEditing = {(value) => {
+              }}
+            />
+            
+            <View style = {{padding: 15}}/>
+            <Text>{"Account (be consistent!)"}</Text>
+
+            <View style = {{padding: 5}}/>
+            <TextInput 
+              style = {styles.textInputBox}
+              onEndEditing = {(value) => {
+              }}
+            />
+            
+            <View style = {{padding: 15}}/>
+            <Text>{"Type (income, expense, or transfer)"}</Text>
+
+            <View style = {{padding: 5}}/>
+            <TextInput 
+              style = {styles.textInputBox}
+              onEndEditing = {(value) => {
+              }}
+            />
+            
+            <View style = {{padding: 15}}/>
+            <Text>{"Amount"}</Text>
+
+            <View style = {{padding: 5}}/>
+            <TextInput 
+              style = {styles.textInputBox}
+              onEndEditing = {(value) => {
+              }}
+            />
+
+            <TouchableOpacity style = {styles.closeEditTransactionModalButton} onPress = {() => setModalVisible(!modalVisible)}>
+              <Text>{'Close'}</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
 
       </ScrollView>
 
