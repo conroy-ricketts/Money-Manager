@@ -135,6 +135,7 @@ function TransactionLog() : JSX.Element {
   const [currentYear, setCurrentYear] = useState(testTransactionsAsJSON[0].year);
   
   const [modalVisible, setModalVisible] = useState(false);
+  const [transactionToEdit, setTransactionToEdit] = useState(-1);
 
   return (
     <View style = {styles.screen}>
@@ -278,7 +279,7 @@ function TransactionLog() : JSX.Element {
             (selectedTimePeriod == 3 && transactionData.year == currentYear)
           ) ?
           (
-            <TouchableOpacity style = {styles.cards} onPress = {() => setModalVisible(!modalVisible)} key = {index}>
+            <TouchableOpacity style = {styles.cards} onPress = {() => {setModalVisible(!modalVisible); setTransactionToEdit(index)}} key = {index}>
               { 
                 index === 0 || transactionData.date !== testTransactionsAsJSON[index-1].date || 
                 transactionData.type !== testTransactionsAsJSON[index-1].type && selectedView !== 0 ?
@@ -311,6 +312,66 @@ function TransactionLog() : JSX.Element {
             <TextInput 
               style = {styles.textInputBox}
               onEndEditing = {(value) => {
+
+                //format for data is MM-DD-YYYY, so data parsed is [month, day, year]
+                let dataParsed = value.nativeEvent.text.split(/[-]+/);
+                let month = '';
+
+                switch(dataParsed[0]) {
+                  case '1': {
+                    month = 'Jan.';
+                    break;
+                  }
+                  case '2': {
+                    month = 'Feb.';
+                    break;
+                  }
+                  case '3': {
+                    month = 'Mar.';
+                    break;
+                  }
+                  case '4': {
+                    month = 'Apr.';
+                    break;
+                  }
+                  case '5': {
+                    month = 'May';
+                    break;
+                  }
+                  case '6': {
+                    month = 'June';
+                    break;
+                  }
+                  case '7': {
+                    month = 'July';
+                    break;
+                  }
+                  case '8': {
+                    month = 'Aug.';
+                    break;
+                  }
+                  case '9': {
+                    month = 'Sept.';
+                    break;
+                  }
+                  case '10': {
+                    month = 'Oct.';
+                    break;
+                  }
+                  case '11': {
+                    month = 'Nov.';
+                    break;
+                  }
+                  case '12': {
+                    month = 'Dec.';
+                    break;
+                  }
+                }
+
+                testTransactionsAsJSON[transactionToEdit].month = Number(dataParsed[0]);
+                testTransactionsAsJSON[transactionToEdit].day = Number(dataParsed[1]);
+                testTransactionsAsJSON[transactionToEdit].year = Number(dataParsed[2]);                
+                testTransactionsAsJSON[transactionToEdit].date = `${month} ${dataParsed[1]}, ${dataParsed[2]}`;
               }}
             />
 
@@ -321,6 +382,7 @@ function TransactionLog() : JSX.Element {
             <TextInput 
               style = {styles.textInputBox}
               onEndEditing = {(value) => {
+                testTransactionsAsJSON[transactionToEdit].category = value.nativeEvent.text;
               }}
             />
             
@@ -331,6 +393,7 @@ function TransactionLog() : JSX.Element {
             <TextInput 
               style = {styles.textInputBox}
               onEndEditing = {(value) => {
+                testTransactionsAsJSON[transactionToEdit].subCategory = value.nativeEvent.text;
               }}
             />
             
@@ -341,6 +404,7 @@ function TransactionLog() : JSX.Element {
             <TextInput 
               style = {styles.textInputBox}
               onEndEditing = {(value) => {
+                testTransactionsAsJSON[transactionToEdit].account = value.nativeEvent.text;
               }}
             />
             
@@ -351,6 +415,18 @@ function TransactionLog() : JSX.Element {
             <TextInput 
               style = {styles.textInputBox}
               onEndEditing = {(value) => {
+                if(value.nativeEvent.text == 'income')
+                {
+                  testTransactionsAsJSON[transactionToEdit].type = 1;
+                }
+                else if(value.nativeEvent.text == 'expense')
+                {
+                  testTransactionsAsJSON[transactionToEdit].type = 2;
+                }
+                else if(value.nativeEvent.text == 'transfer')
+                {
+                  testTransactionsAsJSON[transactionToEdit].type = 3;
+                }
               }}
             />
             
@@ -361,6 +437,7 @@ function TransactionLog() : JSX.Element {
             <TextInput 
               style = {styles.textInputBox}
               onEndEditing = {(value) => {
+                testTransactionsAsJSON[transactionToEdit].amount = Number(value.nativeEvent.text);
               }}
             />
 
