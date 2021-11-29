@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import { testTransactionsAsJSON } from './TransactionLog';
+import RunningTotalForStatistics from '../components/RunningTotalForStatistics';
 
 const Statistics = () => {
 
@@ -131,6 +132,9 @@ const Statistics = () => {
             <TouchableOpacity style = {styles.viewToggle} onPress = {() => setSelectedView((selectedView + 1) % 2)}>
                 <Text style = {styles.viewToggleText}>{viewTitles[selectedView]}</Text>
             </TouchableOpacity>
+
+            {/*Render the running total*/}
+            <RunningTotalForStatistics type = {selectedView}/>
   
         </View>
     );
