@@ -12,13 +12,15 @@ const OverView = () => {
 export default OverView;
 
 const styles = StyleSheet.create({
-    container: {
+    container: 
+    {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#DBDBD9'
     },
-    text: {
+    text: 
+    {
         color: '#131313',
         fontWeight: 'bold',
         fontSize: 30,
