@@ -3,7 +3,7 @@ import React from 'react';
 import { testTransactionsAsJSON } from '../screens/TransactionLog';
 import { View, StyleSheet, Text } from 'react-native';
 
-var normalTextSize = 14;
+const normalTextSize = 14;
 
 const totalStyles = StyleSheet.create
 ({
@@ -21,19 +21,19 @@ const totalStyles = StyleSheet.create
   },
   incomeText:
   {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: normalTextSize,
     color: '#008315',
   },
   expenseText:
   {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: normalTextSize,
     color: '#DB0000',
   },
   balanceText:
   {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: normalTextSize,
     color: '#0057D9',
   },    
@@ -41,13 +41,13 @@ const totalStyles = StyleSheet.create
 
 function RunningTotal()
 {
-  var income = 0;
-  var expenses = 0;
+  let income = 0;
+  let expenses = 0;
 
-  var Indenom = "";
-  var Exdenom = "";
+  let Indenom = '';
+  let Exdenom = '';
 
-  for(var i = 0; i < testTransactionsAsJSON.length; i++)
+  for(let i = 0; i < testTransactionsAsJSON.length; i++)
   {
     if(testTransactionsAsJSON[i].type == 1)
     {
@@ -66,39 +66,39 @@ function RunningTotal()
   if(pseudoIncome >= 1000 && pseudoIncome <= 999999)
   {
     pseudoIncome = (pseudoIncome/1000);
-    Indenom = "k";
+    Indenom = 'k';
   }
   else if(pseudoIncome >= 1000000 && pseudoIncome < 1000000000)
   {
     pseudoIncome = (pseudoIncome/1000000);
-    Indenom = "MM";
+    Indenom = 'MM';
   }
   else if(pseudoIncome >= 1000000000)
   {
     pseudoIncome = (pseudoIncome/1000000000);
-    Indenom = "B";
+    Indenom = 'B';
   }
 
   if(pseudoExpense >= 1000 && pseudoExpense <= 999999)
   {
     pseudoExpense = (pseudoExpense/1000);
-    Exdenom = "k";
+    Exdenom = 'k';
   }
   else if(pseudoExpense >= 1000000 && pseudoExpense< 1000000000)
   {
     pseudoExpense = (pseudoExpense/1000000);
-    Exdenom = "MM";
+    Exdenom = 'MM';
   }
   else if(pseudoExpense >= 1000000000)
   {
     pseudoExpense = (pseudoExpense/1000000000);
-    Indenom = "B";
+    Indenom = 'B';
   }
 
   return (
     <View style = {totalStyles.card}>
-      <Text style = {[ totalStyles.incomeText, {position: 'absolute', left: 0, top: 0} ]}> {"Total Income: $" + pseudoIncome.toFixed(2) + Indenom} </Text>
-      <Text style = {[ totalStyles.expenseText, {position: 'absolute', right: 5, top: 0} ]}> {"Total Expenses: $" + pseudoExpense.toFixed(2) + Exdenom} </Text>
+      <Text style = {[ totalStyles.incomeText, {position: 'absolute', left: 0, top: 0} ]}> {'Total Income: $' + pseudoIncome.toFixed(2) + Indenom} </Text>
+      <Text style = {[ totalStyles.expenseText, {position: 'absolute', right: 5, top: 0} ]}> {'Total Expenses: $' + pseudoExpense.toFixed(2) + Exdenom} </Text>
     </View>
   );
 }

@@ -22,8 +22,8 @@ export default function RunningTotalForStatistics({ type }: TypeProps)
   let income = 0;
   let expenses = 0;
 
-  let Indenom = "";
-  let Exdenom = "";
+  let Indenom = '';
+  let Exdenom = '';
 
   for(let i = 0; i < testTransactionsAsJSON.length; i++)
   {    
@@ -43,33 +43,33 @@ export default function RunningTotalForStatistics({ type }: TypeProps)
   if(pseudoIncome >= 1000 && pseudoIncome <= 999999)
   {
     pseudoIncome = (pseudoIncome/1000);
-    Indenom = "k";
+    Indenom = 'k';
   }
   else if(pseudoIncome >= 1000000 && pseudoIncome < 1000000000)
   {
     pseudoIncome = (pseudoIncome/1000000);
-    Indenom = "MM";
+    Indenom = 'MM';
   }
   else if(pseudoIncome >= 1000000000)
   {
     pseudoIncome = (pseudoIncome/1000000000);
-    Indenom = "B";
+    Indenom = 'B';
   }
 
   if(pseudoExpense >= 1000 && pseudoExpense <= 999999)
   {
     pseudoExpense = (pseudoExpense/1000);
-    Exdenom = "k";
+    Exdenom = 'k';
   }
   else if(pseudoExpense >= 1000000 && pseudoExpense< 1000000000)
   {
     pseudoExpense = (pseudoExpense/1000000);
-    Exdenom = "MM";
+    Exdenom = 'MM';
   }
   else if(pseudoExpense >= 1000000000)
   {
     pseudoExpense = (pseudoExpense/1000000000);
-    Indenom = "B";
+    Indenom = 'B';
   }
 
   return (

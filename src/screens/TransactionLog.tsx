@@ -5,19 +5,19 @@ import RunningTotal from '../components/RunningTotal';
 
 const styles = StyleSheet.create
 ({
-    screen:
+  screen:
     {
       flex: 1,
       backgroundColor: '#DBDBD9',
       alignItems: 'center',
     },
-    cards: 
+  cards: 
     {
       alignItems: 'center',
       top: 20,
       padding: 3,
     },
-    timeToggle:
+  timeToggle:
     {
       width: 100,
       height: 35,
@@ -30,12 +30,12 @@ const styles = StyleSheet.create
       justifyContent: 'center',
       borderRadius: 10,
     },
-    timeToggleText:
+  timeToggleText:
     {
       color: 'black',
       fontSize: 14,
     },
-    viewToggle:
+  viewToggle:
     {
       width: 100,
       height: 35,
@@ -48,16 +48,16 @@ const styles = StyleSheet.create
       justifyContent: 'center',
       borderRadius: 10,
     },
-    viewToggleText:
+  viewToggleText:
     {
       color: 'black',
       fontSize: 14,
     },
-    scrollView:
+  scrollView:
     {
       marginVertical: 80,
     },
-    previousButton:
+  previousButton:
     {
       width: 35,
       height: 35,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create
       alignItems: 'center',
       justifyContent: 'center',
     },
-    nextButton:
+  nextButton:
     {
       width: 35,
       height: 35,
@@ -77,7 +77,7 @@ const styles = StyleSheet.create
       alignItems: 'center',
       justifyContent: 'center',
     },
-    editTransactionModal:
+  editTransactionModal:
     {
       flex: 1,
       borderWidth: 2,
@@ -87,7 +87,7 @@ const styles = StyleSheet.create
       borderRadius: 20,
       alignItems: 'center',
     },
-    closeEditTransactionModalButton:
+  closeEditTransactionModalButton:
     {
       position: 'absolute',
       width: 150,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create
       justifyContent: 'center',
       borderRadius: 10,
     },
-    textInputBox:
+  textInputBox:
     {
       color: 'black',
       borderColor: 'black',
@@ -116,7 +116,7 @@ function DateLabel({ date }: { date: string}): JSX.Element {
       <Text style={{alignSelf: 'center', justifyContent: 'center', backgroundColor: '#DBDBD9', margin: 0, padding: 5}}>{date}</Text>
       <View style={{flex: 1, height: 2, backgroundColor: '#000', margin: 0, padding: 0}} />
     </View>
-  )
+  );
 }
  
 function TransactionLog() : JSX.Element {
@@ -253,7 +253,7 @@ function TransactionLog() : JSX.Element {
 
       {/*Render the view toggle button*/}
       <TouchableOpacity style = {styles.viewToggle} onPress = {() => setSelectedView((selectedView + 1) % 4)}>
-          <Text style = {styles.viewToggleText}>{viewTitles[selectedView]}</Text>
+        <Text style = {styles.viewToggleText}>{viewTitles[selectedView]}</Text>
       </TouchableOpacity>
 
       {/*Pad the top of the scroll view so that it does not get overlapped*/}
@@ -278,18 +278,18 @@ function TransactionLog() : JSX.Element {
             (selectedTimePeriod == 2 && transactionData.month == currentMonth) ||
             (selectedTimePeriod == 3 && transactionData.year == currentYear)
           ) ?
-          (
-            <TouchableOpacity style = {styles.cards} onPress = {() => {setModalVisible(!modalVisible); setTransactionToEdit(index)}} key = {index}>
-              { 
-                index === 0 || transactionData.date !== testTransactionsAsJSON[index-1].date || 
+            (
+              <TouchableOpacity style = {styles.cards} onPress = {() => {setModalVisible(!modalVisible); setTransactionToEdit(index);}} key = {index}>
+                { 
+                  index === 0 || transactionData.date !== testTransactionsAsJSON[index-1].date || 
                 transactionData.type !== testTransactionsAsJSON[index-1].type && selectedView !== 0 ?
-                <DateLabel date={transactionData.date}/>  
-                : null
-              }
-              <TransactionCard transaction = {transactionData}/>
-            </TouchableOpacity>
-          )
-          : null
+                    <DateLabel date={transactionData.date}/>  
+                    : null
+                }
+                <TransactionCard transaction = {transactionData}/>
+              </TouchableOpacity>
+            )
+            : null
 
         ))}
 
@@ -306,7 +306,7 @@ function TransactionLog() : JSX.Element {
           <View style = {styles.editTransactionModal}>
 
             <View style = {{padding: 15}}/>
-            <Text>{"Date (MM-DD-YYYY)"}</Text>
+            <Text>{'Date (MM-DD-YYYY)'}</Text>
 
             <View style = {{padding: 5}}/>
             <TextInput 
@@ -314,58 +314,58 @@ function TransactionLog() : JSX.Element {
               onEndEditing = {(value) => {
 
                 //format for data is MM-DD-YYYY, so data parsed is [month, day, year]
-                let dataParsed = value.nativeEvent.text.split(/[-]+/);
+                const dataParsed = value.nativeEvent.text.split(/[-]+/);
                 let month = '';
 
                 switch(dataParsed[0]) {
-                  case '1': {
-                    month = 'Jan.';
-                    break;
-                  }
-                  case '2': {
-                    month = 'Feb.';
-                    break;
-                  }
-                  case '3': {
-                    month = 'Mar.';
-                    break;
-                  }
-                  case '4': {
-                    month = 'Apr.';
-                    break;
-                  }
-                  case '5': {
-                    month = 'May';
-                    break;
-                  }
-                  case '6': {
-                    month = 'June';
-                    break;
-                  }
-                  case '7': {
-                    month = 'July';
-                    break;
-                  }
-                  case '8': {
-                    month = 'Aug.';
-                    break;
-                  }
-                  case '9': {
-                    month = 'Sept.';
-                    break;
-                  }
-                  case '10': {
-                    month = 'Oct.';
-                    break;
-                  }
-                  case '11': {
-                    month = 'Nov.';
-                    break;
-                  }
-                  case '12': {
-                    month = 'Dec.';
-                    break;
-                  }
+                case '1': {
+                  month = 'Jan.';
+                  break;
+                }
+                case '2': {
+                  month = 'Feb.';
+                  break;
+                }
+                case '3': {
+                  month = 'Mar.';
+                  break;
+                }
+                case '4': {
+                  month = 'Apr.';
+                  break;
+                }
+                case '5': {
+                  month = 'May';
+                  break;
+                }
+                case '6': {
+                  month = 'June';
+                  break;
+                }
+                case '7': {
+                  month = 'July';
+                  break;
+                }
+                case '8': {
+                  month = 'Aug.';
+                  break;
+                }
+                case '9': {
+                  month = 'Sept.';
+                  break;
+                }
+                case '10': {
+                  month = 'Oct.';
+                  break;
+                }
+                case '11': {
+                  month = 'Nov.';
+                  break;
+                }
+                case '12': {
+                  month = 'Dec.';
+                  break;
+                }
                 }
 
                 testTransactionsAsJSON[transactionToEdit].month = Number(dataParsed[0]);
@@ -376,7 +376,7 @@ function TransactionLog() : JSX.Element {
             />
 
             <View style = {{padding: 15}}/>
-            <Text>{"Category (be consistent!)"}</Text>
+            <Text>{'Category (be consistent!)'}</Text>
 
             <View style = {{padding: 5}}/>
             <TextInput 
@@ -387,7 +387,7 @@ function TransactionLog() : JSX.Element {
             />
             
             <View style = {{padding: 15}}/>
-            <Text>{"Subcategory (be consistent!)"}</Text>
+            <Text>{'Subcategory (be consistent!)'}</Text>
 
             <View style = {{padding: 5}}/>
             <TextInput 
@@ -398,7 +398,7 @@ function TransactionLog() : JSX.Element {
             />
             
             <View style = {{padding: 15}}/>
-            <Text>{"Account (be consistent!)"}</Text>
+            <Text>{'Account (be consistent!)'}</Text>
 
             <View style = {{padding: 5}}/>
             <TextInput 
@@ -409,7 +409,7 @@ function TransactionLog() : JSX.Element {
             />
             
             <View style = {{padding: 15}}/>
-            <Text>{"Type (income, expense, or transfer)"}</Text>
+            <Text>{'Type (income, expense, or transfer)'}</Text>
 
             <View style = {{padding: 5}}/>
             <TextInput 
@@ -431,7 +431,7 @@ function TransactionLog() : JSX.Element {
             />
             
             <View style = {{padding: 15}}/>
-            <Text>{"Amount"}</Text>
+            <Text>{'Amount'}</Text>
 
             <View style = {{padding: 5}}/>
             <TextInput 
