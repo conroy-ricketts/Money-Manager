@@ -1,6 +1,6 @@
-import React from "react";
-import { Text, ScrollView, StyleSheet, View } from "react-native";
-import { testTransactionsAsJSON } from "../screens/TransactionLog";
+import React from 'react';
+import { Text, ScrollView, StyleSheet, View } from 'react-native';
+import { testTransactionsAsJSON } from '../screens/TransactionLog';
 
 interface TypeProps
 {
@@ -34,7 +34,7 @@ export default function PieChartLegend({ type }: TypeProps)
       incomeCards.forEach(function (card) {
         if(transaction.category == card.category)
           categoryExists = true;
-      })
+      });
 
       //add new card if its category does not exist
       if(!categoryExists)
@@ -65,7 +65,7 @@ export default function PieChartLegend({ type }: TypeProps)
       expenseCards.forEach(function (card) {
         if(transaction.category == card.category)
           categoryExists = true;
-      })
+      });
 
       //add new card if its category does not exist
       if(!categoryExists)
@@ -86,11 +86,11 @@ export default function PieChartLegend({ type }: TypeProps)
         }
       }
     }
-  })
+  });
 
   //calculate percentages
-  incomeCards.forEach(function (card) {totalIncome += card.amount})
-  expenseCards.forEach(function (card) {totalExpenses += card.amount})
+  incomeCards.forEach(function (card) {totalIncome += card.amount;});
+  expenseCards.forEach(function (card) {totalExpenses += card.amount;});
   for(let i = 0; i < incomeCards.length; i++)
     incomeCards[i].percentage = (incomeCards[i].amount / totalIncome) * 100;
   for(let i = 0; i < expenseCards.length; i++)
@@ -104,30 +104,30 @@ export default function PieChartLegend({ type }: TypeProps)
     <ScrollView style = {styles.scrollView}>
       {/*Render the array of categories and check if we want to render income or expenses*/}
       {type == 0 ? (
-      incomeCards.map((card, index) => (
-        <View style = {styles.category} key = {index}>
-          <View style = {styles.temporaryLegendColorForPercentatges}/>
-          <Text style = {[styles.textStyle, {left: 3}]}>
-            {`${card.percentage.toFixed(2)}%`}
-          </Text>
-          <Text style = {[styles.textStyle, {left: 75}]}>
-            {card.category.length > 15 ? card.category.substring(0, 15) + '...' : card.category}
-          </Text>
-          <Text style = {[styles.textStyle, {right: 0}]}>{card.amount}</Text>
-        </View>
-      )) ) : (
+        incomeCards.map((card, index) => (
+          <View style = {styles.category} key = {index}>
+            <View style = {styles.temporaryLegendColorForPercentatges}/>
+            <Text style = {[styles.textStyle, {left: 3}]}>
+              {`${card.percentage.toFixed(2)}%`}
+            </Text>
+            <Text style = {[styles.textStyle, {left: 75}]}>
+              {card.category.length > 15 ? card.category.substring(0, 15) + '...' : card.category}
+            </Text>
+            <Text style = {[styles.textStyle, {right: 0}]}>{card.amount}</Text>
+          </View>
+        )) ) : (
         expenseCards.map((card, index) => (
-        <View style = {styles.category} key = {index}>
-          <View style = {styles.temporaryLegendColorForPercentatges}/>
-          <Text style = {[styles.textStyle, {left: 3}]}>
-            {`${card.percentage.toFixed(2)}%`}
-          </Text>
-          <Text style = {[styles.textStyle, {left: 75}]}>
-            {card.category.length > 15 ? card.category.substring(0, 15) + '...' : card.category}
-          </Text>
-          <Text style = {[styles.textStyle, {right: 0}]}>{card.amount}</Text>
-        </View>
-      )) )}
+          <View style = {styles.category} key = {index}>
+            <View style = {styles.temporaryLegendColorForPercentatges}/>
+            <Text style = {[styles.textStyle, {left: 3}]}>
+              {`${card.percentage.toFixed(2)}%`}
+            </Text>
+            <Text style = {[styles.textStyle, {left: 75}]}>
+              {card.category.length > 15 ? card.category.substring(0, 15) + '...' : card.category}
+            </Text>
+            <Text style = {[styles.textStyle, {right: 0}]}>{card.amount}</Text>
+          </View>
+        )) )}
     </ScrollView>
   );
 }
