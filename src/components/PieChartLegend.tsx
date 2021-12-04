@@ -8,14 +8,17 @@ interface TypeProps
   type: number;
 }
 
+interface categoryCard
+{
+  amount: number;
+  category: string;
+  percentage: number;
+}
+
 export default function PieChartLegend({ type }: TypeProps)
 {
-  const incomeAmounts: number[] = [];
-  const expenseAmounts: number[] = [];
-  const incomeCategories: string[] = [];
-  const expenseCategories: string[] = [];
-  const incomePercentages: number[] = [];
-  const expensePercentages: number[] = [];
+  const incomeCards: categoryCard[] = [];
+  const expenseCards: categoryCard[] = [];
   let totalIncome = 0;
   let totalExpenses = 0;
 
@@ -28,27 +31,25 @@ export default function PieChartLegend({ type }: TypeProps)
       let categoryExists = false;
 
       //check if the category exists
-      incomeCategories.forEach(function (category) {
-        if(transaction.category == category)
+      incomeCards.forEach(function (card) {
+        if(transaction.category == card.category)
           categoryExists = true;
       })
 
-      //add new category if it does not exist
+      //add new card if its category does not exist
       if(!categoryExists)
       {
-        incomeCategories.push(transaction.category);
-        incomeAmounts.push(transaction.amount);
-        incomePercentages.push(-1);
-        index = incomeCategories.length;
+        incomeCards.push({amount: transaction.amount, category: transaction.category, percentage: -1});
+        index = incomeCards.length;
       }
       else
       {
         //add to existing category if it exists
-        for(let i = 0; i < incomeCategories.length; i++)
+        for(let i = 0; i < incomeCards.length; i++)
         {
-          if(incomeCategories[i] == transaction.category)
+          if(incomeCards[i].category == transaction.category)
           {
-            incomeAmounts[i] += transaction.amount;
+            incomeCards[i].amount += transaction.amount;
             break;
           }
         }
@@ -61,27 +62,25 @@ export default function PieChartLegend({ type }: TypeProps)
       let categoryExists = false;
 
       //check if the category exists
-      expenseCategories.forEach(function (category) {
-        if(transaction.category == category)
+      expenseCards.forEach(function (card) {
+        if(transaction.category == card.category)
           categoryExists = true;
       })
 
-      //add new category if it does not exist
+      //add new card if its category does not exist
       if(!categoryExists)
       {
-        expenseCategories.push(transaction.category);
-        expenseAmounts.push(transaction.amount);
-        expensePercentages.push(-1);
-        index = expenseCategories.length;
+        expenseCards.push({amount: transaction.amount, category: transaction.category, percentage: -1});
+        index = expenseCards.length;
       }
       else
       {
         //add to existing category if it exists
-        for(let i = 0; i < expenseCategories.length; i++)
+        for(let i = 0; i < expenseCards.length; i++)
         {
-          if(expenseCategories[i] == transaction.category)
+          if(expenseCards[i].category == transaction.category)
           {
-            expenseAmounts[i] += transaction.amount;
+            expenseCards[i].amount += transaction.amount;
             break;
           }
         }
@@ -90,37 +89,43 @@ export default function PieChartLegend({ type }: TypeProps)
   })
 
   //calculate percentages
-  incomeAmounts.forEach(function (amount) {totalIncome += amount})
-  expenseAmounts.forEach(function (amount) {totalExpenses += amount})
-  for(let i = 0; i < incomeCategories.length; i++)
-    incomePercentages[i] = (incomeAmounts[i] / totalIncome) * 100;
-  for(let i = 0; i < expenseCategories.length; i++)
-    expensePercentages[i] = (expenseAmounts[i] / totalExpenses) * 100;
+  incomeCards.forEach(function (card) {totalIncome += card.amount})
+  expenseCards.forEach(function (card) {totalExpenses += card.amount})
+  for(let i = 0; i < incomeCards.length; i++)
+    incomeCards[i].percentage = (incomeCards[i].amount / totalIncome) * 100;
+  for(let i = 0; i < expenseCards.length; i++)
+    expenseCards[i].percentage = (expenseCards[i].amount / totalExpenses) * 100;
+
+  //sort both income and expense cards from greatest amount to smallest
+  incomeCards.sort((a, b) => (a.amount > b.amount ? -1 : 1));
+  expenseCards.sort((a, b) => (a.amount > b.amount ? -1 : 1));
 
   return (
     <ScrollView style = {styles.scrollView}>
       {/*Render the array of categories and check if we want to render income or expenses*/}
       {type == 0 ? (
-      incomeCategories.map((category, index) => (
+      incomeCards.map((card, index) => (
         <View style = {styles.category} key = {index}>
-          <Text style = {[styles.textStyle, {left: 0}]}>
-            {`${incomePercentages[index].toFixed(2)}%`}
+          <View style = {styles.temporaryLegendColorForPercentatges}/>
+          <Text style = {[styles.textStyle, {left: 3}]}>
+            {`${card.percentage.toFixed(2)}%`}
           </Text>
           <Text style = {[styles.textStyle, {left: 75}]}>
-            {category.length > 15 ? category.substring(0, 15) + '...' : category}
+            {card.category.length > 15 ? card.category.substring(0, 15) + '...' : card.category}
           </Text>
-          <Text style = {[styles.textStyle, {right: 0}]}>{incomeAmounts[index]}</Text>
+          <Text style = {[styles.textStyle, {right: 0}]}>{card.amount}</Text>
         </View>
       )) ) : (
-      expenseCategories.map((category, index) => (
+        expenseCards.map((card, index) => (
         <View style = {styles.category} key = {index}>
-          <Text style = {[styles.textStyle, {left: 0}]}>
-            {`${expensePercentages[index].toFixed(2)}%`}
+          <View style = {styles.temporaryLegendColorForPercentatges}/>
+          <Text style = {[styles.textStyle, {left: 3}]}>
+            {`${card.percentage.toFixed(2)}%`}
           </Text>
           <Text style = {[styles.textStyle, {left: 75}]}>
-            {category.length > 15 ? category.substring(0, 15) + '...' : category}
+            {card.category.length > 15 ? card.category.substring(0, 15) + '...' : card.category}
           </Text>
-          <Text style = {[styles.textStyle, {right: 0}]}>{expenseAmounts[index]}</Text>
+          <Text style = {[styles.textStyle, {right: 0}]}>{card.amount}</Text>
         </View>
       )) )}
     </ScrollView>
@@ -134,7 +139,6 @@ const styles = StyleSheet.create({
   },
   category:
   {
-    backgroundColor: '#DBDBD9',
     height: 30,
     width: 333,
   },
@@ -142,5 +146,15 @@ const styles = StyleSheet.create({
   {
     fontSize: 18,
     position: 'absolute',
+  },
+  temporaryLegendColorForPercentatges:
+  {
+    backgroundColor: 'red', 
+    width: 65, 
+    height: 25, 
+    left: 0,
+    borderColor: 'black',
+    borderRadius: 5,
+    borderWidth: 1,
   },
 });
