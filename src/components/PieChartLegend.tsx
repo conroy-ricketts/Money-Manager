@@ -113,7 +113,7 @@ export default function PieChartLegend({ type }: TypeProps)
             <Text style = {[styles.textStyle, {left: 75}]}>
               {card.category.length > 15 ? card.category.substring(0, 15) + '...' : card.category}
             </Text>
-            <Text style = {[styles.textStyle, {right: 0}]}>{card.amount}</Text>
+            <Text style = {[styles.textStyle, {right: 0}]}>{`$${card.amount.toFixed(2)}`}</Text>
           </View>
         )) ) : (
         expenseCards.map((card, index) => (
@@ -125,7 +125,7 @@ export default function PieChartLegend({ type }: TypeProps)
             <Text style = {[styles.textStyle, {left: 75}]}>
               {card.category.length > 15 ? card.category.substring(0, 15) + '...' : card.category}
             </Text>
-            <Text style = {[styles.textStyle, {right: 0}]}>{card.amount}</Text>
+            <Text style = {[styles.textStyle, {right: 0}]}>{`$${card.amount.toFixed(2)}`}</Text>
           </View>
         )) )}
     </ScrollView>
