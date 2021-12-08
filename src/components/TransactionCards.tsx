@@ -3,35 +3,35 @@ import { View, StyleSheet, Text } from 'react-native';
 
 const styles = StyleSheet.create
 ({
-    card: 
-    {
-      backgroundColor: '#DBDBD9',
-      height: 61,
-      width: 333,
-      borderRadius: 5,
-      borderWidth: 1.5,
-      borderColor: 'black',
-    },
-    normalText:
-    {
-      fontSize: 14,
-      color: 'black',
-    },
-    incomeText:
-    {
-      fontSize: 24,
-      color: '#008315',
-    },
-    expenseText:
-    {
-      fontSize: 24,
-      color: '#DB0000',
-    },
-    transferText:
-    {
-      fontSize: 24,
-      color: '#0057D9',
-    },    
+  card: 
+  {
+    backgroundColor: '#DBDBD9',
+    height: 61,
+    width: 333,
+    borderRadius: 5,
+    borderWidth: 1.5,
+    borderColor: 'black',
+  },
+  normalText:
+  {
+    fontSize: 14,
+    color: 'black',
+  },
+  incomeText:
+  {
+    fontSize: 24,
+    color: '#008315',
+  },
+  expenseText:
+  {
+    fontSize: 24,
+    color: '#DB0000',
+  },
+  transferText:
+  {
+    fontSize: 24,
+    color: '#0057D9',
+  },    
 });
 
 export interface Transaction
@@ -54,22 +54,22 @@ interface TransactionProps
 
 export default function TransactionCard({ transaction }: TransactionProps) 
 {
-  let denom: string = "";
-  let pseudoAmount: number = 0;
-  var toggleAltFormat: boolean = false;
+  let denom = '';
+  let pseudoAmount = 0;
+  let toggleAltFormat = false;
   let amountStyle: any;
-  let transactionCategory: string = 
-    transaction.subCategory == "" ? transaction.category :
-    `${transaction.category} - ${transaction.subCategory}`;
+  const transactionCategory: string = 
+    transaction.subCategory == '' ? transaction.category :
+      `${transaction.category} - ${transaction.subCategory}`;
 
   {/*truncate both the account name and the category name so that they do not overlap with the transcation amount*/}
-  let truncateSize = 30;
-  let accountName: string =
-    transaction.account.length > truncateSize ? transaction.account.substring(0, truncateSize) + "..." :
-    transaction.account;
-  let categoryName: string =
-    transactionCategory.length > truncateSize ? transactionCategory.substring(0, truncateSize) + "..." :
-    transactionCategory;
+  const truncateSize = 30;
+  const accountName: string =
+    transaction.account.length > truncateSize ? transaction.account.substring(0, truncateSize) + '...' :
+      transaction.account;
+  const categoryName: string =
+    transactionCategory.length > truncateSize ? transactionCategory.substring(0, truncateSize) + '...' :
+      transactionCategory;
 
   if(transaction.type == 1)
   {
@@ -86,21 +86,21 @@ export default function TransactionCard({ transaction }: TransactionProps)
 
   if(transaction.amount >= 1000 && transaction.amount <= 999999)
   {
-      pseudoAmount = transaction.amount/1000;
-      denom = "k";
-      toggleAltFormat = true;
+    pseudoAmount = transaction.amount/1000;
+    denom = 'k';
+    toggleAltFormat = true;
   }
   else if(transaction.amount >= 1000000 && transaction.amount < 1000000000)
   {
-      pseudoAmount = transaction.amount/1000000;
-      denom = "MM";
-      toggleAltFormat = true;
+    pseudoAmount = transaction.amount/1000000;
+    denom = 'MM';
+    toggleAltFormat = true;
   }
   else if(transaction.amount >= 1000000000)
   {
-      pseudoAmount = transaction.amount/1000000000;
-      denom = "B";
-      toggleAltFormat = true;
+    pseudoAmount = transaction.amount/1000000000;
+    denom = 'B';
+    toggleAltFormat = true;
   }
   
   return (
