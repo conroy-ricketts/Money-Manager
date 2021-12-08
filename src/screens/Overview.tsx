@@ -4,7 +4,9 @@ import { View, Text, StyleSheet} from 'react-native';
 const OverView = () => {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Overview</Text>
+            <View style={styles.label}>
+                <Text style={styles.text}>Accounts</Text>
+            </View>
         </View>
     );
 }
@@ -15,12 +17,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#DBDBD9'
+        backgroundColor: '#DBDBD9',
     },
     text: {
         color: '#131313',
-        fontWeight: 'bold',
         fontSize: 30,
-    }
+    },
+    label: {
+        top: 100
+    },
+
+    
 });
