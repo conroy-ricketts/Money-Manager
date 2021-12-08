@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet} from 'react-native';
 
 const OverView = () => {
+
     return (
         <View style={styles.container}>
             <View style={styles.label}>
@@ -14,6 +15,7 @@ const OverView = () => {
 export default OverView;
 
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         alignItems: 'center',
@@ -28,4 +30,5 @@ const styles = StyleSheet.create({
     },
 
     
+
 });

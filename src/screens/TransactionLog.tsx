@@ -1,23 +1,23 @@
 import React, { useState }  from 'react';
-import { TouchableOpacity, ScrollView, StyleSheet, View, Text } from 'react-native';
+import { TouchableOpacity, ScrollView, StyleSheet, Modal, View, Text, TextInput } from 'react-native';
 import TransactionCard, { Transaction } from '../components/TransactionCards';
 import RunningTotal from '../components/RunningTotal';
 
 const styles = StyleSheet.create
 ({
-    screen:
+  screen:
     {
       flex: 1,
       backgroundColor: '#DBDBD9',
       alignItems: 'center',
     },
-    cards: 
+  cards: 
     {
       alignItems: 'center',
       top: 20,
       padding: 3,
     },
-    timeToggle:
+  timeToggle:
     {
       width: 100,
       height: 35,
@@ -30,12 +30,12 @@ const styles = StyleSheet.create
       justifyContent: 'center',
       borderRadius: 10,
     },
-    timeToggleText:
+  timeToggleText:
     {
       color: 'black',
       fontSize: 14,
     },
-    viewToggle:
+  viewToggle:
     {
       width: 100,
       height: 35,
@@ -48,14 +48,64 @@ const styles = StyleSheet.create
       justifyContent: 'center',
       borderRadius: 10,
     },
-    viewToggleText:
+  viewToggleText:
     {
       color: 'black',
       fontSize: 14,
     },
-    scrollView:
+  scrollView:
     {
       marginVertical: 80,
+    },
+  previousButton:
+    {
+      width: 35,
+      height: 35,
+      position: 'absolute',
+      top: 27,
+      left: 13,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  nextButton:
+    {
+      width: 35,
+      height: 35,
+      position: 'absolute',
+      top: 27,
+      right: 13,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  editTransactionModal:
+    {
+      flex: 1,
+      borderWidth: 2,
+      borderColor: 'black',
+      margin: 5,
+      backgroundColor: '#DBDBD9',
+      borderRadius: 20,
+      alignItems: 'center',
+    },
+  closeEditTransactionModalButton:
+    {
+      position: 'absolute',
+      width: 150,
+      height: 35,
+      borderWidth: 2,
+      bottom: 20,
+      borderColor: 'black',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 10,
+    },
+  textInputBox:
+    {
+      color: 'black',
+      borderColor: 'black',
+      borderWidth: 2,
+      width: 300,
+      paddingHorizontal: 10,
     },
 });
 
@@ -66,7 +116,7 @@ function DateLabel({ date }: { date: string}): JSX.Element {
       <Text style={{alignSelf: 'center', justifyContent: 'center', backgroundColor: '#DBDBD9', margin: 0, padding: 5}}>{date}</Text>
       <View style={{flex: 1, height: 2, backgroundColor: '#000', margin: 0, padding: 0}} />
     </View>
-  )
+  );
 }
  
 function TransactionLog() : JSX.Element {
@@ -80,15 +130,121 @@ function TransactionLog() : JSX.Element {
   const viewTitles: Array<string> = ['All', 'Income', 'Expenses', 'Transfers'];
 
   //we should render the most recent transactions by default
-  let currentDay = testTransactionsAsJSON[0].day;
-  let currentMonth = testTransactionsAsJSON[0].month;
-  let currentYear = testTransactionsAsJSON[0].year;
+  const [currentDay, setCurrentDay] = useState(testTransactionsAsJSON[0].day);
+  const [currentMonth, setCurrentMonth] = useState(testTransactionsAsJSON[0].month);
+  const [currentYear, setCurrentYear] = useState(testTransactionsAsJSON[0].year);
+  
+  const [modalVisible, setModalVisible] = useState(false);
+  const [transactionToEdit, setTransactionToEdit] = useState(-1);
 
   return (
     <View style = {styles.screen}>
       
       {/*Render the running total*/}
       <RunningTotal/>
+
+      {/*Render the previos button*/}
+      <TouchableOpacity style = {styles.previousButton} onPress = {() => {
+        if(selectedTimePeriod == 0)
+        {
+          setCurrentDay(currentDay - 1);
+
+          if(currentDay < 1)
+          {
+            setCurrentDay(31);
+            setCurrentMonth(currentMonth - 1);
+
+            if(currentMonth < 1)
+            {
+              setCurrentMonth(12);
+              setCurrentYear(currentYear - 1);
+            }
+          }
+        }
+        else if(selectedTimePeriod == 1)
+        {
+          setCurrentDay(currentDay - 7);
+
+          if(currentDay < 1)
+          {
+            setCurrentDay(31);
+            setCurrentMonth(currentMonth - 1);
+
+            if(currentMonth < 1)
+            {
+              setCurrentMonth(12);
+              setCurrentYear(currentYear - 1);
+            }
+          }
+        }
+        else if(selectedTimePeriod == 2)
+        {
+          setCurrentMonth(currentMonth - 1);
+
+          if(currentMonth < 1)
+          {
+            setCurrentMonth(12);
+            setCurrentYear(currentYear - 1);
+          }
+        }
+        else if(selectedTimePeriod == 3)
+        {
+          setCurrentYear(currentYear - 1);
+        }
+      }}>
+        <Text style = {{fontSize: 30}}>{'<'}</Text>
+      </TouchableOpacity>
+
+      {/*Render the next button*/}
+      <TouchableOpacity style = {styles.nextButton} onPress = {() => {
+        if(selectedTimePeriod == 0)
+        {
+          setCurrentDay(currentDay + 1);
+
+          if(currentDay > 31)
+          {
+            setCurrentDay(1);
+            setCurrentMonth(currentMonth + 1);
+
+            if(currentMonth > 12)
+            {
+              setCurrentMonth(1);
+              setCurrentYear(currentYear + 1);
+            }
+          }
+        }
+        else if(selectedTimePeriod == 1)
+        {
+          setCurrentDay(currentDay + 7);
+
+          if(currentDay > 31)
+          {
+            setCurrentDay(1);
+            setCurrentMonth(currentMonth + 1);
+
+            if(currentMonth > 12)
+            {
+              setCurrentMonth(1);
+              setCurrentYear(currentYear + 1);
+            }
+          }
+        }
+        else if(selectedTimePeriod == 2)
+        {
+          setCurrentMonth(currentMonth + 1);
+
+          if(currentMonth > 12)
+          {
+            setCurrentMonth(1);
+            setCurrentYear(currentYear + 1);
+          }
+        }
+        else if(selectedTimePeriod == 3)
+        {
+          setCurrentYear(currentYear + 1);
+        }}}>
+        <Text style = {{fontSize: 30}}>{'>'}</Text>
+      </TouchableOpacity>
 
       {/*Render the time toggle button*/}
       <TouchableOpacity style = {styles.timeToggle} onPress = {() => setSelectedTimePeriod((selectedTimePeriod + 1) % 4)}>
@@ -97,7 +253,7 @@ function TransactionLog() : JSX.Element {
 
       {/*Render the view toggle button*/}
       <TouchableOpacity style = {styles.viewToggle} onPress = {() => setSelectedView((selectedView + 1) % 4)}>
-          <Text style = {styles.viewToggleText}>{viewTitles[selectedView]}</Text>
+        <Text style = {styles.viewToggleText}>{viewTitles[selectedView]}</Text>
       </TouchableOpacity>
 
       {/*Pad the top of the scroll view so that it does not get overlapped*/}
@@ -112,31 +268,184 @@ function TransactionLog() : JSX.Element {
           //AND if the user selected it's time period
           (transactionData.type == selectedView || selectedView == 0) &&
           (
-            (selectedTimePeriod == 0 && transactionData.day == currentDay) ||
+            (selectedTimePeriod == 0 && transactionData.day == currentDay &&
+              transactionData.month == currentMonth &&
+              transactionData.year == currentYear) ||
             (selectedTimePeriod == 1 && transactionData.day <= currentDay && 
-            transactionData.day > currentDay - 7 &&
-            transactionData.month == currentMonth && 
-            transactionData.year == currentYear) ||
+              transactionData.day > currentDay - 7 &&
+              transactionData.month == currentMonth && 
+              transactionData.year == currentYear) ||
             (selectedTimePeriod == 2 && transactionData.month == currentMonth) ||
             (selectedTimePeriod == 3 && transactionData.year == currentYear)
           ) ?
-          (
-            <View style = {styles.cards} key = {index}>
-              { 
-                index === 0 || transactionData.date !== testTransactionsAsJSON[index-1].date || 
+            (
+              <TouchableOpacity style = {styles.cards} onPress = {() => {setModalVisible(!modalVisible); setTransactionToEdit(index);}} key = {index}>
+                { 
+                  index === 0 || transactionData.date !== testTransactionsAsJSON[index-1].date || 
                 transactionData.type !== testTransactionsAsJSON[index-1].type && selectedView !== 0 ?
-                <DateLabel date={transactionData.date}/>  
-                : null
-              }
-              <TransactionCard transaction = {transactionData}/>
-            </View>
-          )
-          : null
+                    <DateLabel date={transactionData.date}/>  
+                    : null
+                }
+                <TransactionCard transaction = {transactionData}/>
+              </TouchableOpacity>
+            )
+            : null
 
         ))}
 
         {/*Pad the bottom of the scroll view so that we can see the last card!*/}
         <View style = {{height: 300}}/>
+
+        {/*Edit transaction modal*/}
+        <Modal
+          animationType = 'slide'
+          transparent = {true}
+          visible = {modalVisible}
+          onRequestClose = {() => setModalVisible(!modalVisible)}
+        >
+          <View style = {styles.editTransactionModal}>
+
+            <View style = {{padding: 15}}/>
+            <Text>{'Date (MM-DD-YYYY)'}</Text>
+
+            <View style = {{padding: 5}}/>
+            <TextInput 
+              style = {styles.textInputBox}
+              onEndEditing = {(value) => {
+
+                //format for data is MM-DD-YYYY, so data parsed is [month, day, year]
+                const dataParsed = value.nativeEvent.text.split(/[-]+/);
+                let month = '';
+
+                switch(dataParsed[0]) {
+                case '1': {
+                  month = 'Jan.';
+                  break;
+                }
+                case '2': {
+                  month = 'Feb.';
+                  break;
+                }
+                case '3': {
+                  month = 'Mar.';
+                  break;
+                }
+                case '4': {
+                  month = 'Apr.';
+                  break;
+                }
+                case '5': {
+                  month = 'May';
+                  break;
+                }
+                case '6': {
+                  month = 'June';
+                  break;
+                }
+                case '7': {
+                  month = 'July';
+                  break;
+                }
+                case '8': {
+                  month = 'Aug.';
+                  break;
+                }
+                case '9': {
+                  month = 'Sept.';
+                  break;
+                }
+                case '10': {
+                  month = 'Oct.';
+                  break;
+                }
+                case '11': {
+                  month = 'Nov.';
+                  break;
+                }
+                case '12': {
+                  month = 'Dec.';
+                  break;
+                }
+                }
+
+                testTransactionsAsJSON[transactionToEdit].month = Number(dataParsed[0]);
+                testTransactionsAsJSON[transactionToEdit].day = Number(dataParsed[1]);
+                testTransactionsAsJSON[transactionToEdit].year = Number(dataParsed[2]);                
+                testTransactionsAsJSON[transactionToEdit].date = `${month} ${dataParsed[1]}, ${dataParsed[2]}`;
+              }}
+            />
+
+            <View style = {{padding: 15}}/>
+            <Text>{'Category (be consistent!)'}</Text>
+
+            <View style = {{padding: 5}}/>
+            <TextInput 
+              style = {styles.textInputBox}
+              onEndEditing = {(value) => {
+                testTransactionsAsJSON[transactionToEdit].category = value.nativeEvent.text;
+              }}
+            />
+            
+            <View style = {{padding: 15}}/>
+            <Text>{'Subcategory (be consistent!)'}</Text>
+
+            <View style = {{padding: 5}}/>
+            <TextInput 
+              style = {styles.textInputBox}
+              onEndEditing = {(value) => {
+                testTransactionsAsJSON[transactionToEdit].subCategory = value.nativeEvent.text;
+              }}
+            />
+            
+            <View style = {{padding: 15}}/>
+            <Text>{'Account (be consistent!)'}</Text>
+
+            <View style = {{padding: 5}}/>
+            <TextInput 
+              style = {styles.textInputBox}
+              onEndEditing = {(value) => {
+                testTransactionsAsJSON[transactionToEdit].account = value.nativeEvent.text;
+              }}
+            />
+            
+            <View style = {{padding: 15}}/>
+            <Text>{'Type (income, expense, or transfer)'}</Text>
+
+            <View style = {{padding: 5}}/>
+            <TextInput 
+              style = {styles.textInputBox}
+              onEndEditing = {(value) => {
+                if(value.nativeEvent.text == 'income')
+                {
+                  testTransactionsAsJSON[transactionToEdit].type = 1;
+                }
+                else if(value.nativeEvent.text == 'expense')
+                {
+                  testTransactionsAsJSON[transactionToEdit].type = 2;
+                }
+                else if(value.nativeEvent.text == 'transfer')
+                {
+                  testTransactionsAsJSON[transactionToEdit].type = 3;
+                }
+              }}
+            />
+            
+            <View style = {{padding: 15}}/>
+            <Text>{'Amount'}</Text>
+
+            <View style = {{padding: 5}}/>
+            <TextInput 
+              style = {styles.textInputBox}
+              onEndEditing = {(value) => {
+                testTransactionsAsJSON[transactionToEdit].amount = Number(value.nativeEvent.text);
+              }}
+            />
+
+            <TouchableOpacity style = {styles.closeEditTransactionModalButton} onPress = {() => setModalVisible(!modalVisible)}>
+              <Text>{'Close'}</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
 
       </ScrollView>
 
@@ -282,9 +591,9 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 23.12,
   },
   {
-    date: 'Sept. 22, 2021 (Wednesday)',
+    date: 'Sept. 14, 2021 (Wednesday)',
     month: 9,
-    day: 22,
+    day: 14,
     year: 2021,
     category: 'Groceries',
     subCategory: '',
@@ -293,8 +602,19 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 214,
   },
   {
-    date: 'Oct. 22, 2021 (Wednesday)',
-    month: 10,
+    date: 'August. 31, 2021 (Wednesday)',
+    month: 8,
+    day: 31,
+    year: 2021,
+    category: 'Groceries',
+    subCategory: '',
+    account: 'Checking Account',
+    type: 2,
+    amount: 23.12,
+  },
+  {
+    date: 'August. 22, 2021 (Wednesday)',
+    month: 8,
     day: 22,
     year: 2021,
     category: 'Groceries',
@@ -304,8 +624,8 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 23.12,
   },
   {
-    date: 'Oct. 22, 2021 (Wednesday)',
-    month: 10,
+    date: 'Aug. 22, 2021 (Wednesday)',
+    month: 8,
     day: 22,
     year: 2021,
     category: 'Groceries',
@@ -315,10 +635,10 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 214,
   },
   {
-    date: 'Jan. 22, 2022 (Wednesday)',
+    date: 'Jan. 22, 2020 (Wednesday)',
     month: 1,
     day: 22,
-    year: 2022,
+    year: 2020,
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',
@@ -326,10 +646,10 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 23.12,
   },
   {
-    date: 'Jan. 22, 2022 (Wednesday)',
+    date: 'Jan. 22, 2020 (Wednesday)',
     month: 1,
     day: 22,
-    year: 2022,
+    year: 2020,
     category: 'Groceries',
     subCategory: '',
     account: 'Checking Account',

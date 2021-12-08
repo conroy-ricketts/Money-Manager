@@ -1,45 +1,23 @@
-// The top of the transaction history log should show a running total of income and expenses.
 import React from 'react';
 import { testTransactionsAsJSON } from '../screens/TransactionLog';
-import { View, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 
-const normalTextSize = 14;
-
-const totalStyles = StyleSheet.create
+const styles = StyleSheet.create
 ({
-  card: 
+  textStyle: 
   {
-    top: 75,
-    alignSelf: 'center',
-    backgroundColor: '#DBDBD9',
-    height: 12,
-    width: 365,
-    borderRadius: 0,
-    borderWidth: 0,
-    borderColor: 'black',      
     position: 'absolute',
-  },
-  incomeText:
-  {
-    fontWeight: 'bold',
-    fontSize: normalTextSize,
-    color: '#008315',
-  },
-  expenseText:
-  {
-    fontWeight: 'bold',
-    fontSize: normalTextSize,
-    color: '#DB0000',
-  },
-  balanceText:
-  {
-    fontWeight: 'bold',
-    fontSize: normalTextSize,
-    color: '#0057D9',
+    top: 80,
+    fontSize: 18,
   },    
 });
 
-function RunningTotal()
+interface TypeProps
+{
+  type: number; //0 for income, 1 for expenses
+}
+
+export default function RunningTotalForStatistics({ type }: TypeProps)
 {
   let income = 0;
   let expenses = 0;
@@ -48,11 +26,10 @@ function RunningTotal()
   let Exdenom = '';
 
   for(let i = 0; i < testTransactionsAsJSON.length; i++)
-  {
+  {    
     if(testTransactionsAsJSON[i].type == 1)
     {
       income += testTransactionsAsJSON[i].amount;
-
     }
     else if(testTransactionsAsJSON[i].type == 2)
     {
@@ -96,10 +73,8 @@ function RunningTotal()
   }
 
   return (
-    <View style = {totalStyles.card}>
-      <Text style = {[ totalStyles.incomeText, {position: 'absolute', left: 0, top: 0} ]}> {'Total Income: $' + pseudoIncome.toFixed(2) + Indenom} </Text>
-      <Text style = {[ totalStyles.expenseText, {position: 'absolute', right: 5, top: 0} ]}> {'Total Expenses: $' + pseudoExpense.toFixed(2) + Exdenom} </Text>
-    </View>
+    <Text style = {styles.textStyle}> 
+      {type == 0 ? `Total Income: $${pseudoIncome.toFixed(2)}${Indenom}` : `Total Expenses: $${pseudoExpense.toFixed(2)}${Exdenom}`} 
+    </Text>
   );
 }
-export default RunningTotal;
