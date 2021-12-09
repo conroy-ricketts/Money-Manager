@@ -19,11 +19,11 @@ const styles = StyleSheet.create
     },
   timeToggle:
     {
-      width: 100,
+      width: 80,
       height: 35,
       position: 'absolute',
       top: 30,
-      left: 60,
+      left: 55,
       borderWidth: 2,
       borderColor: 'black',
       alignItems: 'center',
@@ -37,11 +37,11 @@ const styles = StyleSheet.create
     },
   viewToggle:
     {
-      width: 100,
+      width: 80,
       height: 35,
       position: 'absolute',
       top: 30,
-      right: 60,
+      right: 55,
       borderWidth: 2,
       borderColor: 'black',
       alignItems: 'center',
@@ -66,6 +66,18 @@ const styles = StyleSheet.create
       left: 13,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+  addButton:
+    {
+      width: 80,
+      height: 35,
+      position: 'absolute',
+      top: 30,
+      borderWidth: 2,
+      borderColor: 'black',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 10,
     },
   nextButton:
     {
@@ -136,6 +148,20 @@ function TransactionLog() : JSX.Element {
   
   const [modalVisible, setModalVisible] = useState(false);
   const [transactionToEdit, setTransactionToEdit] = useState(-1);
+  const [addModalVisible, setAddModalVisible] = useState(false);
+
+  const tempTransaction: Transaction =
+  {
+    date: '',
+    month: 0,
+    day: 0,
+    year: 0,
+    category: '',
+    subCategory: '',
+    account: '',
+    type: 0, //set this to 1 for income, 2 for expenses, or 3 for transfers
+    amount: 0,
+  };
 
   return (
     <View style = {styles.screen}>
@@ -255,6 +281,165 @@ function TransactionLog() : JSX.Element {
       <TouchableOpacity style = {styles.viewToggle} onPress = {() => setSelectedView((selectedView + 1) % 4)}>
         <Text style = {styles.viewToggleText}>{viewTitles[selectedView]}</Text>
       </TouchableOpacity>
+
+      {/*Render the add button button*/}
+      <TouchableOpacity style = {styles.addButton} onPress = {() => setAddModalVisible(!addModalVisible)}>
+        <Text style = {{color: 'black', fontSize: 14}}>{'Add'}</Text>
+      </TouchableOpacity>
+
+      {/*Add transaction modal*/}
+      <Modal
+        animationType = 'slide'
+        transparent = {true}
+        visible = {addModalVisible}
+        onRequestClose = {() => setModalVisible(!modalVisible)}
+      >
+        <View style = {styles.editTransactionModal}>
+
+          <View style = {{padding: 15}}/>
+          <Text>{'Date (Month-Day-Year) (NO leading 0s)'}</Text>
+
+          <View style = {{padding: 5}}/>
+          <TextInput 
+            style = {styles.textInputBox}
+            onEndEditing = {(value) => {
+
+              //format for data is Month-Day-Year, so data parsed is [month, day, year]
+              const dataParsed = value.nativeEvent.text.split(/[-]+/);
+              let month = '';
+
+              switch(dataParsed[0]) {
+              case '1': {
+                month = 'Jan.';
+                break;
+              }
+              case '2': {
+                month = 'Feb.';
+                break;
+              }
+              case '3': {
+                month = 'Mar.';
+                break;
+              }
+              case '4': {
+                month = 'Apr.';
+                break;
+              }
+              case '5': {
+                month = 'May';
+                break;
+              }
+              case '6': {
+                month = 'June';
+                break;
+              }
+              case '7': {
+                month = 'July';
+                break;
+              }
+              case '8': {
+                month = 'Aug.';
+                break;
+              }
+              case '9': {
+                month = 'Sept.';
+                break;
+              }
+              case '10': {
+                month = 'Oct.';
+                break;
+              }
+              case '11': {
+                month = 'Nov.';
+                break;
+              }
+              case '12': {
+                month = 'Dec.';
+                break;
+              }
+              }
+
+              tempTransaction.month = Number(dataParsed[0]);
+              tempTransaction.day = Number(dataParsed[1]);
+              tempTransaction.year = Number(dataParsed[2]);                
+              tempTransaction.date = `${month} ${dataParsed[1]}, ${dataParsed[2]}`;
+            }}
+          />
+
+          <View style = {{padding: 15}}/>
+          <Text>{'Category (be consistent!)'}</Text>
+
+          <View style = {{padding: 5}}/>
+          <TextInput 
+            style = {styles.textInputBox}
+            onEndEditing = {(value) => {
+              tempTransaction.category = value.nativeEvent.text;
+            }}
+          />
+          
+          <View style = {{padding: 15}}/>
+          <Text>{'Subcategory (be consistent!)'}</Text>
+
+          <View style = {{padding: 5}}/>
+          <TextInput 
+            style = {styles.textInputBox}
+            onEndEditing = {(value) => {
+              tempTransaction.subCategory = value.nativeEvent.text;
+            }}
+          />
+          
+          <View style = {{padding: 15}}/>
+          <Text>{'Account (be consistent!)'}</Text>
+
+          <View style = {{padding: 5}}/>
+          <TextInput 
+            style = {styles.textInputBox}
+            onEndEditing = {(value) => {
+              tempTransaction.account = value.nativeEvent.text;
+            }}
+          />
+          
+          <View style = {{padding: 15}}/>
+          <Text>{'Type (income, expense, or transfer)'}</Text>
+
+          <View style = {{padding: 5}}/>
+          <TextInput 
+            style = {styles.textInputBox}
+            onEndEditing = {(value) => {
+              if(value.nativeEvent.text == 'income')
+              {
+                tempTransaction.type = 1;
+              }
+              else if(value.nativeEvent.text == 'expense')
+              {
+                tempTransaction.type = 2;
+              }
+              else if(value.nativeEvent.text == 'transfer')
+              {
+                tempTransaction.type = 3;
+              }
+            }}
+          />
+          
+          <View style = {{padding: 15}}/>
+          <Text>{'Amount'}</Text>
+
+          <View style = {{padding: 5}}/>
+          <TextInput 
+            style = {styles.textInputBox}
+            onEndEditing = {(value) => {
+              tempTransaction.amount = Number(value.nativeEvent.text);
+            }}
+          />
+
+          <TouchableOpacity style = {styles.closeEditTransactionModalButton} onPress = {() => {
+            setAddModalVisible(!addModalVisible);
+            testTransactionsAsJSON.unshift(tempTransaction);
+          }}>
+            <Text>{'Close'}</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
 
       {/*Pad the top of the scroll view so that it does not get overlapped*/}
       <View style = {{height: 10}}/>
