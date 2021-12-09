@@ -644,7 +644,7 @@ export default TransactionLog;
 //The most recent transaction goes to the top of this array.
 export const testTransactionsAsJSON: Transaction[] = [
   {
-    date: 'Sept. 25, 2021 (Saturday)',
+    date: 'Sept. 25, 2021',
     month: 9,
     day: 25,
     year: 2021,
@@ -655,7 +655,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 100000,
   },
   {
-    date: 'Sept. 25, 2021 (Saturday)',
+    date: 'Sept. 25, 2021',
     month: 9,
     day: 25,
     year: 2021,
@@ -666,7 +666,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 100000,
   },
   {
-    date: 'Sept. 25, 2021 (Saturday)',
+    date: 'Sept. 25, 2021',
     month: 9,
     day: 25,
     year: 2021,
@@ -677,7 +677,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 24.12,
   },
   {
-    date: 'Sept. 25, 2021 (Saturday)',
+    date: 'Sept. 25, 2021',
     month: 9,
     day: 25,
     year: 2021,
@@ -688,7 +688,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 14.15,
   },
   {
-    date: 'Sept. 25, 2021 (Saturday)',
+    date: 'Sept. 25, 2021',
     month: 9,
     day: 25,
     year: 2021,
@@ -699,7 +699,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 54.20,
   },
   {
-    date: 'Sept. 25, 2021 (Saturday)',
+    date: 'Sept. 25, 2021',
     month: 9,
     day: 25,
     year: 2021,
@@ -710,7 +710,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 20.12,
   },
   {
-    date: 'Sept. 24, 2021 (Friday)',
+    date: 'Sept. 24, 2021',
     month: 9,
     day: 24,
     year: 2021,
@@ -721,7 +721,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 100,
   },
   {
-    date: 'Sept. 24, 2021 (Friday)',
+    date: 'Sept. 24, 2021',
     month: 9,
     day: 24,
     year: 2021,
@@ -732,7 +732,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 54.12,
   },
   {
-    date: 'Sept. 23, 2021 (Thursday)',
+    date: 'Sept. 23, 2021',
     month: 9,
     day: 23,
     year: 2021,
@@ -743,7 +743,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 5652.40,
   },
   {
-    date: 'Sept. 22, 2021 (Wednesday)',
+    date: 'Sept. 22, 2021',
     month: 9,
     day: 22,
     year: 2021,
@@ -754,7 +754,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 30,
   },
   {
-    date: 'Sept. 22, 2021 (Wednesday)',
+    date: 'Sept. 22, 2021',
     month: 9,
     day: 22,
     year: 2021,
@@ -765,7 +765,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 54.12,
   },
   {
-    date: 'Sept. 22, 2021 (Wednesday)',
+    date: 'Sept. 22, 2021',
     month: 9,
     day: 22,
     year: 2021,
@@ -776,7 +776,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 23.12,
   },
   {
-    date: 'Sept. 14, 2021 (Wednesday)',
+    date: 'Sept. 14, 2021',
     month: 9,
     day: 14,
     year: 2021,
@@ -787,7 +787,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 214,
   },
   {
-    date: 'August. 31, 2021 (Wednesday)',
+    date: 'August. 31, 2021',
     month: 8,
     day: 31,
     year: 2021,
@@ -798,7 +798,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 23.12,
   },
   {
-    date: 'August. 22, 2021 (Wednesday)',
+    date: 'August. 22, 2021',
     month: 8,
     day: 22,
     year: 2021,
@@ -809,7 +809,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 23.12,
   },
   {
-    date: 'Aug. 22, 2021 (Wednesday)',
+    date: 'Aug. 22, 2021',
     month: 8,
     day: 22,
     year: 2021,
@@ -820,7 +820,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 214,
   },
   {
-    date: 'Jan. 22, 2020 (Wednesday)',
+    date: 'Jan. 22, 2020',
     month: 1,
     day: 22,
     year: 2020,
@@ -831,7 +831,7 @@ export const testTransactionsAsJSON: Transaction[] = [
     amount: 23.12,
   },
   {
-    date: 'Jan. 22, 2020 (Wednesday)',
+    date: 'Jan. 22, 2020',
     month: 1,
     day: 22,
     year: 2020,
