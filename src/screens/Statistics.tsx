@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import { testTransactionsAsJSON } from './TransactionLog';
 import RunningTotalForStatistics from '../components/RunningTotalForStatistics';
 import PieChartLegend from '../components/PieChartLegend';
+import PieChartT from '../components/PieChartT';
 
 const Statistics = () => {
 
@@ -137,8 +138,10 @@ const Statistics = () => {
       {/*Render the running total*/}
       <RunningTotalForStatistics type = {selectedView}/>
       
-      {/*Place holder for pie chart*/}
-      <View style = {{padding: 10}}/>
+      {/*Render the pie chart*/}
+      <View style = {{top: -140}}>
+        <PieChartT type = {selectedView}/>
+      </View>
 
       {/*Pie chart legend*/}
       <PieChartLegend type = {selectedView}/>

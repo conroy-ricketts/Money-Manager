@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, ScrollView, StyleSheet, View } from 'react-native';
 import { testTransactionsAsJSON } from '../screens/TransactionLog';
+import { colorSet } from '../components/PieChartT';
 
 interface TypeProps
 {
@@ -15,10 +16,11 @@ interface categoryCard
   percentage: number;
 }
 
+export const incomeCards: categoryCard[] = [];
+export const expenseCards: categoryCard[] = [];
+
 export default function PieChartLegend({ type }: TypeProps)
 {
-  const incomeCards: categoryCard[] = [];
-  const expenseCards: categoryCard[] = [];
   let totalIncome = 0;
   let totalExpenses = 0;
 
@@ -106,7 +108,7 @@ export default function PieChartLegend({ type }: TypeProps)
       {type == 0 ? (
         incomeCards.map((card, index) => (
           <View style = {styles.category} key = {index}>
-            <View style = {styles.temporaryLegendColorForPercentatges}/>
+            <View style = {[styles.temporaryLegendColorForPercentatges, {backgroundColor: colorSet[index % colorSet.length]}]}/>
             <Text style = {[styles.textStyle, {left: 3}]}>
               {`${card.percentage.toFixed(2)}%`}
             </Text>
@@ -118,7 +120,7 @@ export default function PieChartLegend({ type }: TypeProps)
         )) ) : (
         expenseCards.map((card, index) => (
           <View style = {styles.category} key = {index}>
-            <View style = {styles.temporaryLegendColorForPercentatges}/>
+          <View style = {[styles.temporaryLegendColorForPercentatges, {backgroundColor: colorSet[index % colorSet.length]}]}/>
             <Text style = {[styles.textStyle, {left: 3}]}>
               {`${card.percentage.toFixed(2)}%`}
             </Text>
@@ -136,6 +138,7 @@ const styles = StyleSheet.create({
   scrollView:
   {
     position: 'absolute',
+    top: 390,
   },
   category:
   {
@@ -149,7 +152,6 @@ const styles = StyleSheet.create({
   },
   temporaryLegendColorForPercentatges:
   {
-    backgroundColor: 'red', 
     width: 65, 
     height: 25, 
     left: 0,
