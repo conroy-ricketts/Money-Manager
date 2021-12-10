@@ -8,7 +8,7 @@ import PieChartT from '../components/PieChartT';
 const Statistics = () => {
 
   //0 for daily, 1 for weekly, 2 for monthly, 3 for yearly
-  const [selectedTimePeriod, setSelectedTimePeriod] = useState(0);
+  const [selectedTimePeriod, setSelectedTimePeriod] = useState(3);
   const timeTitles: Array<string> = ['Daily', 'Weekly', 'Monthly', 'Yearly'];
 
   //0 for income, 1 for expenses
@@ -136,7 +136,13 @@ const Statistics = () => {
       </TouchableOpacity>
 
       {/*Render the running total*/}
-      <RunningTotalForStatistics type = {selectedView}/>
+      <RunningTotalForStatistics 
+        type = { selectedView } 
+        timePeriod = { selectedTimePeriod }
+        currentDay = { currentDay }
+        currentMonth = { currentMonth }
+        currentYear = { currentYear }
+      />
       
       {/*Render the pie chart*/}
       <View style = {{top: -140}}>
@@ -144,7 +150,13 @@ const Statistics = () => {
       </View>
 
       {/*Pie chart legend*/}
-      <PieChartLegend type = {selectedView}/>
+      <PieChartLegend 
+        type = { selectedView } 
+        timePeriod = { selectedTimePeriod }
+        currentDay = { currentDay }
+        currentMonth = { currentMonth }
+        currentYear = { currentYear }
+      />
   
     </View>
   );

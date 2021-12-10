@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, ScrollView, StyleSheet, View } from 'react-native';
 import { testTransactionsAsJSON } from '../screens/TransactionLog';
 import { colorSet } from '../components/PieChartT';
@@ -7,6 +7,13 @@ interface TypeProps
 {
   //0 for income, 1 for expenses
   type: number;
+
+  //0 for daily, 1 for weekly, 2 for monthly, 3 for yearly
+  timePeriod: number;
+
+  currentDay: number;
+  currentMonth: number;
+  currentYear: number;
 }
 
 interface categoryCard
@@ -19,71 +26,89 @@ interface categoryCard
 export const incomeCards: categoryCard[] = [];
 export const expenseCards: categoryCard[] = [];
 
-export default function PieChartLegend({ type }: TypeProps)
+export default function PieChartLegend({ type, timePeriod, currentDay, currentMonth, currentYear }: TypeProps)
 {
+  //empty the income and expense card arrays
+  while(incomeCards.length > 0) 
+    incomeCards.pop();
+  while(expenseCards.length > 0) 
+    expenseCards.pop();
+
   let totalIncome = 0;
   let totalExpenses = 0;
 
   testTransactionsAsJSON.forEach(function (transaction)
   {
-    //check if transaction is income
-    if(transaction.type == 1)
+    //check if we SHOULD consider this transaction
+    if((timePeriod == 0 && transaction.day == currentDay &&
+      transaction.month == currentMonth &&
+      transaction.year == currentYear) ||
+    (timePeriod == 1 && transaction.day <= currentDay && 
+      transaction.day > currentDay - 7 &&
+      transaction.month == currentMonth && 
+      transaction.year == currentYear) ||
+    (timePeriod == 2 && transaction.month == currentMonth) ||
+    (timePeriod == 3 && transaction.year == currentYear))
     {
-      let index = -1;
-      let categoryExists = false;
-
-      //check if the category exists
-      incomeCards.forEach(function (card) {
-        if(transaction.category == card.category)
-          categoryExists = true;
-      });
-
-      //add new card if its category does not exist
-      if(!categoryExists)
+      //check if transaction is income
+      if(transaction.type == 1)
       {
-        incomeCards.push({amount: transaction.amount, category: transaction.category, percentage: -1});
-        index = incomeCards.length;
-      }
-      else
-      {
-        //add to existing category if it exists
-        for(let i = 0; i < incomeCards.length; i++)
+        let index = -1;
+        let categoryExists = false;
+
+        //check if the category exists
+        incomeCards.forEach(function (card) {
+          if(transaction.category == card.category)
+            categoryExists = true;
+        });
+
+        //add new card if its category does not exist
+        if(!categoryExists)
         {
-          if(incomeCards[i].category == transaction.category)
+          incomeCards.push({amount: transaction.amount, category: transaction.category, percentage: -1});
+          index = incomeCards.length;
+        }
+        else
+        {
+          //add to existing category if it exists
+          for(let i = 0; i < incomeCards.length; i++)
           {
-            incomeCards[i].amount += transaction.amount;
-            break;
+            if(incomeCards[i].category == transaction.category)
+            {
+              incomeCards[i].amount += transaction.amount;
+              break;
+            }
           }
         }
       }
-    }
-    //check if transaction is expense
-    else if(transaction.type == 2)
-    {
-      let index = -1;
-      let categoryExists = false;
-
-      //check if the category exists
-      expenseCards.forEach(function (card) {
-        if(transaction.category == card.category)
-          categoryExists = true;
-      });
-
-      //add new card if its category does not exist
-      if(!categoryExists)
+      //check if transaction is expense
+      else if(transaction.type == 2)
       {
-        expenseCards.push({amount: transaction.amount, category: transaction.category, percentage: -1});
-        index = expenseCards.length;
-      }
-      else
-      {
-        //add to existing category if it exists
-        for(let i = 0; i < expenseCards.length; i++)
+        let index = -1;
+        let categoryExists = false;
+
+        //check if the category exists
+        expenseCards.forEach(function (card) {
+          if(transaction.category == card.category)
+            categoryExists = true;
+        });
+
+        //add new card if its category does not exist
+        if(!categoryExists)
         {
-          if(expenseCards[i].category == transaction.category)
+          expenseCards.push({amount: transaction.amount, category: transaction.category, percentage: -1});
+          index = expenseCards.length;
+        }
+        else
+        {
+          //add to existing category if it exists
+          for(let i = 0; i < expenseCards.length; i++)
           {
-            expenseCards[i].amount += transaction.amount;
-            break;
+            if(expenseCards[i].category == transaction.category)
+            {
+              expenseCards[i].amount += transaction.amount;
+              break;
+            }
           }
         }
       }
@@ -112,8 +137,8 @@ export default function PieChartLegend({ type }: TypeProps)
             <Text style = {[styles.textStyle, {left: 3}]}>
               {`${card.percentage.toFixed(2)}%`}
             </Text>
-            <Text style = {[styles.textStyle, {left: 75}]}>
-              {card.category.length > 15 ? card.category.substring(0, 15) + '...' : card.category}
+            <Text style = {[styles.textStyle, {left: 90}]}>
+              {card.category.length > 13 ? card.category.substring(0, 13) + '...' : card.category}
             </Text>
             <Text style = {[styles.textStyle, {right: 0}]}>{`$${card.amount.toFixed(2)}`}</Text>
           </View>
@@ -124,8 +149,8 @@ export default function PieChartLegend({ type }: TypeProps)
             <Text style = {[styles.textStyle, {left: 3}]}>
               {`${card.percentage.toFixed(2)}%`}
             </Text>
-            <Text style = {[styles.textStyle, {left: 75}]}>
-              {card.category.length > 15 ? card.category.substring(0, 15) + '...' : card.category}
+            <Text style = {[styles.textStyle, {left: 90}]}>
+              {card.category.length > 13 ? card.category.substring(0, 13) + '...' : card.category}
             </Text>
             <Text style = {[styles.textStyle, {right: 0}]}>{`$${card.amount.toFixed(2)}`}</Text>
           </View>
@@ -152,7 +177,7 @@ const styles = StyleSheet.create({
   },
   temporaryLegendColorForPercentatges:
   {
-    width: 65, 
+    width: 75, 
     height: 25, 
     left: 0,
     borderColor: 'black',

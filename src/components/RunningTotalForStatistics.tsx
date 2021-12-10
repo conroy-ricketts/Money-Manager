@@ -14,10 +14,18 @@ const styles = StyleSheet.create
 
 interface TypeProps
 {
-  type: number; //0 for income, 1 for expenses
+  //0 for income, 1 for expenses
+  type: number; 
+
+  //0 for daily, 1 for weekly, 2 for monthly, 3 for yearly
+  timePeriod: number;
+
+  currentDay: number;
+  currentMonth: number;
+  currentYear: number;
 }
 
-export default function RunningTotalForStatistics({ type }: TypeProps)
+export default function RunningTotalForStatistics({ type, timePeriod, currentDay, currentMonth, currentYear }: TypeProps)
 {
   let income = 0;
   let expenses = 0;
@@ -26,14 +34,26 @@ export default function RunningTotalForStatistics({ type }: TypeProps)
   let Exdenom = '';
 
   for(let i = 0; i < testTransactionsAsJSON.length; i++)
-  {    
-    if(testTransactionsAsJSON[i].type == 1)
+  {     
+    //check if we SHOULD consider this transaction
+    if((timePeriod == 0 && testTransactionsAsJSON[i].day == currentDay &&
+      testTransactionsAsJSON[i].month == currentMonth &&
+      testTransactionsAsJSON[i].year == currentYear) ||
+    (timePeriod == 1 && testTransactionsAsJSON[i].day <= currentDay && 
+      testTransactionsAsJSON[i].day > currentDay - 7 &&
+      testTransactionsAsJSON[i].month == currentMonth && 
+      testTransactionsAsJSON[i].year == currentYear) ||
+    (timePeriod == 2 && testTransactionsAsJSON[i].month == currentMonth) ||
+    (timePeriod == 3 && testTransactionsAsJSON[i].year == currentYear))
     {
-      income += testTransactionsAsJSON[i].amount;
-    }
-    else if(testTransactionsAsJSON[i].type == 2)
-    {
-      expenses += testTransactionsAsJSON[i].amount;
+      if(testTransactionsAsJSON[i].type == 1)
+      {
+        income += testTransactionsAsJSON[i].amount;
+      }
+      else if(testTransactionsAsJSON[i].type == 2)
+      {
+        expenses += testTransactionsAsJSON[i].amount;
+      }
     }
   }
 
