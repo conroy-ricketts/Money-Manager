@@ -94,7 +94,7 @@ const OverView = () => {
                 
 
                 <View style={{top: 150, width: '100%', paddingHorizontal: 10}}>
-                    {accounts.map(account => (
+                    {accounts.map((account, index) => (
                         <View key = {index} style={{ width: '100%', display: 'flex', justifyContent: 'space-between', flexDirection: 'row', padding: 10}}>
                         <Text numberOfLines={1} style={{fontSize: 20, maxWidth: '50%'}}>{account.name}</Text>
                         <Text style={{fontSize: 20, color: account.amount < 0 ? "#DB0000" : "#008315"}}>{"$" + Math.abs(account.amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
