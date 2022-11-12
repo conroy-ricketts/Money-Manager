@@ -15,7 +15,7 @@ A cross-platform mobile app that allows you to track your personal finances, inc
 - Conroy Ricketts
 
 ## Languages and Technologies Used
-- TypeScripy and JavaScript
+- TypeScript and JavaScript
 - React Native
 - Node.js
 - Expo Client
